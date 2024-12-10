@@ -1,32 +1,21 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 
 export default function NavBar() {
+
+
   return (
-    <nav className="flex flex-row justify-between items-center">
+    <nav className="flex flex-row justify-between items-center font-bold">
       <Link href="/">
         {/* <Image src="/logo.png" alt="BookEase Logo" width={100} height={100} />
          */}
-         BOOKEASE
+        BOOKSMARTLY
       </Link>
-      <ul className="flex space-x-6">
-        <li>
-          <Link href="/how-it-works">How It Works</Link>
-        </li>
-        <li>
-          <Link href="/features">Features</Link>
-        </li>
-        <li>
+      <ul className="flex space-x-6 text-sm md:text-base text-gray-500">
+        <li className="hidden md:flex">
           <Link href="/pricing">Pricing</Link>
-        </li>
-        <li>
-          <Link href="/search">Search</Link>
-        </li>
-        <li>
-          <Link href="/about">About</Link>
-        </li>
-        <li>
-          <Link href="/contact">Contact</Link>
         </li>
         <li>
           <Link href="/login">Login</Link>
