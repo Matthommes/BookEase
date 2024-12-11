@@ -13,13 +13,17 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "BookEase",
+  title: "BookSmartly",
   description: "A customizable booking platform.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#007BFF" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
