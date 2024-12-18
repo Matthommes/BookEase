@@ -33,6 +33,7 @@ export default function Login() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm flex flex-col text-left p-8"
       >
+        <h1 className="mb-12 text-xl">BOOKSMARTLY</h1>
         <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome back</h1>
         <p className="font-medium text-sm text-gray-500 mb-4">
           Enter your credentials to jump right in.
@@ -53,7 +54,7 @@ export default function Login() {
           />
         </div>
 
-        <hr className="border-gray-300 w-full my-8" />
+        <hr className="border-purple-300 w-full my-8" />
 
         <div className="grid w-full max-w-sm items-center gap-1.5 space-y-2 mb-4">
           <Label htmlFor="email">Email</Label>
@@ -61,20 +62,25 @@ export default function Login() {
             type="email"
             id="email"
             placeholder="Email"
-            className="mt-1 mb-3"
+            className="mt-1 mb-3 border-purple-600 focus-visible:ring-purple-400"
           />
           {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
           {isSubmitting ? (
-            <Button disabled>
+            <Button disabled className="bg-purple-500">
               <Loader2 className="animate-spin" />
             </Button>
           ) : (
-            <Button className="font-semibold">Continue</Button>
+            <Button className="font-semibold bg-purple-600 hover:bg-purple-700">
+              Continue
+            </Button>
           )}
         </div>
-        <p className="text-left text-gray-500 font-medium text-sm">
+        <p className="text-left text-gray-500 font-medium text-xs">
           Don't have an account yet?{" "}
-          <Link href="/register" className="text-blue-600 hover:underline">
+          <Link
+            href="/register"
+            className="text-purple-400 underline hover:text-purple-600"
+          >
             Sign up
           </Link>
         </p>
