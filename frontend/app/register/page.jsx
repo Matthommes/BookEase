@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import SocialButton from "../login/component/socialButton";
 
 export default function Register() {
@@ -17,7 +18,6 @@ export default function Register() {
     const email = e.target.email.value;
     if (!validateEmail(email)) {
       setEmailError("Please enter a valid email address.");
-      setIsSubmitting(false);
       return;
     }
     setIsSubmitting(true);
@@ -33,7 +33,15 @@ export default function Register() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm flex flex-col text-left p-8"
       >
-        <h1 className="mb-12 text-xl">BOOKSMARTLY</h1>
+        <Link href="/">
+          <Image
+            src="/mock-logo.webp"
+            alt="Brand logo"
+            width={100}
+            height={200}
+            className="flex"
+          />
+        </Link>
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
           Create your account
         </h1>
@@ -75,7 +83,7 @@ export default function Register() {
           />
           {emailError && <p className="text-red-500 text-xs">{emailError}</p>}
           {isSubmitting ? (
-            <Button disabled>
+            <Button disabled className="bg-purple-500">
               <Loader2 className="animate-spin" />
             </Button>
           ) : (
@@ -87,7 +95,7 @@ export default function Register() {
         <p className="text-left text-gray-500 font-medium mb-2 text-xs">
           By signing up, you agree to our{" "}
           <Link
-            href="/register"
+            href="/terms-and-privacy"
             className="text-purple-400 underline hover:text-purple-600"
           >
             Terms & Privacy.

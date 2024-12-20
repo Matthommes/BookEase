@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function Welcome() {
   return (
-    <main className="h-screen flex items-center justify-center bg-gray">
+    <main className="h-screen flex items-center justify-center">
       {/* Two-column layout */}
       <div className="flex flex-col md:flex-row items-center max-w-5xl mx-auto p-8">
         {/* Left Column */}
