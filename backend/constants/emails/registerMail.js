@@ -1,5 +1,12 @@
 import { sendMail } from "../../config/mailer.js";
-import path from "path";
+import { config } from "dotenv";
+
+
+config();
+
+// Define __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const sendRegisterMail = async (email, token) => {
   const registrationLink = `${process.env.FRONTEND_URL}/register/confirm?token=${token}`;
@@ -11,7 +18,7 @@ export const sendRegisterMail = async (email, token) => {
         <div style="text-align: center; background-color: #f5f5f5; padding: 20px; border-bottom: 1px solid #ddd;">
             <img src="${
               process.env.BRAND_LOGO_URL
-            }" alt="BookSmartly Logo" style="max-width: 120px; margin-bottom: 15px;">
+            }" alt="BookSmartly Logo" style="max-width: 100px; margin-bottom: 15px;">
             <h1 style="color: #333; margin: 0;">Welcome to BookSmartly!</h1>
         </div>
         <div style="padding: 20px;">
@@ -61,18 +68,9 @@ export const sendRegisterMail = async (email, token) => {
     </style>
   `;
 
-const attachments = process.env.BRAND_LOGO_URL
-  ? [
-      {
-        filename: "logo.png",
-        path: path.join(__dirname, "../constants", "logo.png"),
-        cid: "logo",
-      },
-    ]
-  : [];
 
   try {
-    await sendMail(email, emailBody, emailSubject, attachments);
+    await sendMail(email, emailBody, emailSubject);
     console.log("Registration email sent successfully to", email);
   } catch (error) {
     console.error("Error sending registration email:", error);

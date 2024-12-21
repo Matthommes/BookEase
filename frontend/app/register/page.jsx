@@ -8,6 +8,8 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import SocialButton from "../login/component/socialButton";
+import brandLogo from "../../public/brand-logo.png";
+
 
 export default function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,13 +36,14 @@ export default function Register() {
         className="w-full max-w-sm flex flex-col text-left p-8"
       >
         <Link href="/">
-          <Image
-            src="/mock-logo.webp"
-            alt="Brand logo"
-            width={100}
-            height={200}
-            className="flex"
-          />
+          <div className="flex justify-center items-center">
+            <Image
+              src={brandLogo}
+              alt="BookSmartly Logo"
+              className="h-auto w-16 sm:w-20 lg:w-24 mb-10"
+              priority
+            />
+          </div>
         </Link>
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
           Create your account
