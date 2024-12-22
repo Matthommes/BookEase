@@ -3,6 +3,10 @@ import { prisma } from "../config/prisma.js";
 import crypto from "crypto";
 import { sendRegisterMail } from "../constants/emails/registerMail.js";
 import { addMinutes, getMinutes } from "date-fns";
+import { sendLoginEmail } from "../constants/emails/loginEmail.js";
+import { generateToken } from "../config/jwt.js";
+
+// console.log(generateToken({ userId: "alexislordqtest", userEmail: "12" }));
 
 export const registerUser = async (req, res) => {
   try {
@@ -34,25 +38,57 @@ export const registerUser = async (req, res) => {
   }
 };
 
-export const verifyToken = async (req, res) => {};
-
 export const loginUser = async (req, res) => {
-  const { email } = req.body;
-  if (!email)
-    return res
-      .status(code.BAD_REQUEST)
-      .json({ message: "Please enter an email address!" });
+  try {
+    const { email } = req.body;
+    if (!email)
+      return res
+        .status(code.BAD_REQUEST)
+        .json({ message: "Please enter an email address!" });
 
-  const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email } });
 
+    if (!user)
+      return res
+        .status(code.NOT_FOUND)
+        .json({ message: "Email doesn't exist" });
+
+    // GENERATE LOGIN TOKEN
+
+    const token = crypto.randomBytes(32).toString("hex");
+    const tokenExp = addMinutes(new Date(), 5);
+
+    await prisma.user.update({ where: { email }, data: { token, tokenExp } });
+
+    await sendLoginEmail(email, token);
+    res.status(code.OK).json({ message: "Login successful" });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(code.INTERNAL_SERVER_ERROR)
+      .json({ message: "Internal Server Error", error });
+  }
+};
+
+export const verifyToken = async (req, res) => {
+  const { token } = req.query;
+
+  if (!token)
+    return res.status(code.BAD_REQUEST).json({ message: "No token provided!" });
+  const user = await prisma.user.findUnique({ where: { token } });
   if (!user)
-    res.status(code.NOT_FOUND).json({ message: "Email doesn't exist" });
+    return res.status(code.NOT_FOUND).json({ message: "User not found" });
 
-  // GENERATE LOGIN TOKEN
+  if (new Date(user.tokenExp) < new Date())
+    return res.status(code.FORBIDDEN).json({ message: "Token expired" });
 
-  const token = crypto.randomBytes(32).toString("hex");
-  const tokenExp = addMinutes(new Date(), 5);
-
-  await prisma.user.update({ where: { email }, data: { token, tokenExp } });
-  
+  const tokenPayload = generateToken({
+    userId: user.id,
+    userEmail: user.email,
+  });
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { token: "", tokenExp: null },
+  });
+  res.json({ message: "Token verified", user: tokenPayload });
 };

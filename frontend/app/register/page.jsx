@@ -11,6 +11,13 @@ import SocialButton from "../login/component/socialButton";
 import brandLogo from "../../public/brand-logo.png";
 
 
+
+
+
+
+
+
+
 export default function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [emailError, setEmailError] = useState("");
