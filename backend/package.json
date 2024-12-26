@@ -1,5 +1,5 @@
 {
-  "author": "",
+  "author": "Matthew Akahomen",
   "dependencies": {
     "@prisma/client": "^6.1.0",
     "cors": "^2.8.5",
@@ -11,13 +11,12 @@
     "nodemailer": "^6.9.16",
     "prisma": "^6.1.0"
   },
-  "description": "",
+  "description": "A customizable booking platform",
   "keywords": [],
   "license": "ISC",
   "main": "index.js",
   "name": "backend",
   "scripts": {
-    "build": "pnpm build",
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
