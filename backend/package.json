@@ -17,10 +17,10 @@
   "main": "index.js",
   "name": "backend",
   "scripts": {
-  "dev": "nodemon server.js",
-  "start": "node server.js",
-  "build": "pnpm install"
-},
+    "build": "pnpm build",
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
   "type": "module",
   "version": "1.0.0"
 }
