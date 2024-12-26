@@ -6,7 +6,7 @@ config();
 
 
 export const sendRegisterMail = async (email, token) => {
-  const registrationLink = `${process.env.FRONTEND_URL}/verify?token=${token}`;
+  const registrationLink = `${process.env.FRONTEND_URL}/verify/${token}`;
   const currentYear = new Date().getFullYear();
 
   const emailSubject = "Verify Your Email for BookSmartly";

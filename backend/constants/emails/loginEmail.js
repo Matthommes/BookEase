@@ -3,7 +3,7 @@ import { config } from "dotenv";
 config();
 
 export const sendLoginEmail = async (email, token) => {
-  const loginLink = `${process.env.FRONTEND_URL}/verify?token=${token}`;
+  const loginLink = `${process.env.FRONTEND_URL}/verify/${token}`;
   const currentYear = new Date().getFullYear();
 
   const emailSubject = "Your Login Link for BookSmartly";
@@ -14,42 +14,42 @@ export const sendLoginEmail = async (email, token) => {
         <style>
           body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f9f9f9;
             margin: 0;
             padding: 0;
             color: #333;
           }
           .email-container {
             max-width: 600px;
-            margin: 20px auto;
+            margin: 30px auto;
             background: #ffffff;
             border-radius: 10px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
           }
           .email-header {
             text-align: center;
-            background-color: #f5f5f5;
             padding: 20px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #f0f0f0;
           }
           .email-header img {
             max-width: 100px;
             margin-bottom: 15px;
           }
           .email-header h1 {
-            font-size: 24px;
+            font-size: 26px;
             color: #333;
             margin: 0;
           }
           .email-body {
             padding: 20px;
+            text-align: center;
           }
           .email-body h2 {
-            font-size: 20px;
+            font-size: 22px;
             color: #444;
-            margin: 0 0 10px;
+            margin: 0 0 15px;
           }
           .email-body p {
             font-size: 16px;
@@ -60,13 +60,19 @@ export const sendLoginEmail = async (email, token) => {
           .cta-button {
             display: inline-block;
             background-color: #a020f0;
-            color: white;
+            color: #ffffff;
             text-decoration: none;
-            padding: 12px 24px;
+            padding: 12px 30px;
             font-size: 16px;
             border-radius: 5px;
             font-weight: bold;
             margin: 20px auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+          }
+          .cta-button:hover {
+            background-color: #8700d4;
+            transform: translateY(-2px);
           }
           .alt-link {
             font-size: 14px;
@@ -78,7 +84,7 @@ export const sendLoginEmail = async (email, token) => {
             background-color: #f9f9f9;
             padding: 15px;
             text-align: center;
-            font-size: 12px;
+            font-size: 13px;
             color: #aaa;
             border-top: 1px solid #ddd;
           }
@@ -103,6 +109,7 @@ export const sendLoginEmail = async (email, token) => {
             }
             .cta-button {
               background-color: #a020f0;
+              color: #fff;
             }
           }
         </style>
@@ -118,7 +125,7 @@ export const sendLoginEmail = async (email, token) => {
             <p>
               You requested a login link to access your <strong>BookSmartly</strong> account. Click the button below to securely log in. This link is valid for a limited time.
             </p>
-            <p style="text-align: center;">
+            <p>
               <a href="${loginLink}" class="cta-button">Log In to My Account</a>
             </p>
             <p style="text-align: center; font-size: 14px; color: #777;">

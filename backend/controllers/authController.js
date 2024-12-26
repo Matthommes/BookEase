@@ -5,9 +5,7 @@ import { sendRegisterMail } from "../constants/emails/registerMail.js";
 import { addMinutes, getMinutes } from "date-fns";
 import { sendLoginEmail } from "../constants/emails/loginEmail.js";
 import { generateToken } from "../config/jwt.js";
-
-// console.log(generateToken({ userId: "alexislordqtest", userEmail: "12" }));
-
+ 
 export const registerUser = async (req, res) => {
   try {
     const { email } = req.body;
@@ -19,7 +17,7 @@ export const registerUser = async (req, res) => {
     if (userExists)
       return res
         .status(code.CONFLICT)
-        .json({ message: "Email already exists!" });
+        .json({ message: "A user with this email already exists!!" });
 
     const token = crypto.randomBytes(32).toString("hex");
     const tokenExp = addMinutes(new Date(), 5);
@@ -92,3 +90,9 @@ export const verifyToken = async (req, res) => {
   });
   res.json({ message: "Token verified", user: tokenPayload });
 };
+
+
+export const getAllUsers = async(req, res) => {
+  const users = await prisma.user.findMany()
+  res.status(code.ACCEPTED).json(users)
+}
