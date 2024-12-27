@@ -7,7 +7,6 @@ import { handleApiError } from "@/lib/apiError";
 
 export default function TokenPage({ params }) {
   const {token} = use(params);
-  console.log(token)
   const router = useRouter();
   const [error, setError] = useState();
   const { verify } = useAuth();
@@ -15,7 +14,7 @@ export default function TokenPage({ params }) {
   useEffect(() => {
     if (!token) {
       setError("Invalid or missing token.");
-      // router.push("/login");
+      router.push("/login");
       return;
     }
 
@@ -26,7 +25,7 @@ export default function TokenPage({ params }) {
       } catch (error) {
         const errorMessage = await handleApiError(error);
         setError(errorMessage);
-        // router.push("/login");
+        router.push("/login");
       }
     };
 

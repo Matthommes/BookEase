@@ -2,10 +2,10 @@ import { HttpStatusCodes as code } from "../constants/httpStatusCodes.js";
 import { prisma } from "../config/prisma.js";
 import crypto from "crypto";
 import { sendRegisterMail } from "../constants/emails/registerMail.js";
-import { addMinutes, getMinutes } from "date-fns";
+import { addMinutes } from "date-fns";
 import { sendLoginEmail } from "../constants/emails/loginEmail.js";
 import { generateToken } from "../config/jwt.js";
- 
+
 export const registerUser = async (req, res) => {
   try {
     const { email } = req.body;
@@ -27,7 +27,7 @@ export const registerUser = async (req, res) => {
     await sendRegisterMail(newUser.email, newUser.token);
 
     res.status(code.CREATED).json({
-      message: "User created successfully",
+      message: "Successfully created a new user!",
       user: { id: newUser.id, email: newUser.email },
     });
   } catch (error) {
@@ -91,8 +91,7 @@ export const verifyToken = async (req, res) => {
   res.json({ message: "Token verified", user: tokenPayload });
 };
 
-
-export const getAllUsers = async(req, res) => {
-  const users = await prisma.user.findMany()
-  res.status(code.ACCEPTED).json(users)
-}
+export const getAllUsers = async (req, res) => {
+  const users = await prisma.user.findMany();
+  res.status(code.ACCEPTED).json(users);
+};

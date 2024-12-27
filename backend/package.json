@@ -17,7 +17,7 @@
   "main": "index.js",
   "name": "backend",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon server.js",
+    "dev": " nodemon server.js",
     "start": "NODE_ENV=production node server.js",
     "postbuild": "npx prisma migrate deploy"
   },

@@ -45,9 +45,12 @@ export default function Register() {
           body: JSON.stringify(formData),
         }
       );
+      console.log("Response Status:", response.status);
+      console.log("Response Headers:", response.headers);
 
       if (!response.ok) {
         const data = await response.json();
+        // console.log(data)
         throw data;
       }
       router.push("/verify");
