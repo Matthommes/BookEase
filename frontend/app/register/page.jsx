@@ -50,7 +50,6 @@ export default function Register() {
 
       if (!response.ok) {
         const data = await response.json();
-        console.log(data)
         throw data;
       }
       router.push("/verify");
