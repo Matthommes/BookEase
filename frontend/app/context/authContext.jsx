@@ -36,7 +36,7 @@ export default function AuthProvider({ children }) {
 }
 
 // Custom hook to use the AuthContext
-export function useAuth() {
+export function   useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");

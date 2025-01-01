@@ -74,6 +74,13 @@ export const verifyToken = async (req, res) => {
   if (!token)
     return res.status(code.BAD_REQUEST).json({ message: "No token provided!" });
   const user = await prisma.user.findUnique({ where: { token } });
+  if (user) {
+     await prisma.user.update({
+       where: { id: user.id },
+       data: { token: "", tokenExp: null },
+     });
+     res.json({ message: "Token verified", user: tokenPayload });
+  }
   if (!user)
     return res.status(code.NOT_FOUND).json({ message: "User not found" });
 
@@ -84,11 +91,7 @@ export const verifyToken = async (req, res) => {
     userId: user.id,
     userEmail: user.email,
   });
-  await prisma.user.update({
-    where: { id: user.id },
-    data: { token: "", tokenExp: null },
-  });
-  res.json({ message: "Token verified", user: tokenPayload });
+ 
 };
 
 export const getAllUsers = async (req, res) => {
