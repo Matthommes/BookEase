@@ -5,77 +5,59 @@ export default function Feature() {
     <section className="py-10 px-6 lg:px-20">
       {/* Section Intro */}
       <h1 className="text-2xl lg:text-4xl text-center font-bold mb-4">
-        What is Clyne? 👀
+        Why Choose Clyne? 💡
       </h1>
-      <p className="text-lg lg:text-2xl text-center text-gray-600 mb-8">
-        Your booking, smarter and simpler. Manage appointments, connect with
-        clients, and grow your business—all in one place.
+      <p className="text-lg lg:text-xl text-center text-gray-600 mb-8">
+        Clyne is a versatile and customizable booking platform designed to fit
+        the needs of diverse businesses—from nail salons and doctors to rental
+        apartments and personal trainers. Streamline your bookings, grow your
+        brand, and offer clients an exceptional experience.
       </p>
 
       {/* Features */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="text-center p-6 border border-purple-400 shadow-lg rounded-md">
           <h3 className="text-xl font-semibold mb-2">
-            📅 Customizable Booking Pages
+            ✂️ Tailored for Any Business
           </h3>
           <p className="text-gray-500">
-            Create unique booking links tailored to your services and schedule.
+            Whether you're a salon, clinic, apartment rental, or a personal
+            trainer, Clyne adapts to your specific needs.
           </p>
         </div>
         <div className="text-center p-6 border border-purple-400 shadow-lg rounded-md">
-          <h3 className="text-xl font-semibold mb-2">
-            🔔 Real-Time Notifications
-          </h3>
+          <h3 className="text-xl font-semibold mb-2">🛠️ Easy Customization</h3>
           <p className="text-gray-500">
-            Stay updated with instant notifications for new bookings and
-            changes.
+            Customize your booking pages with just a few clicks. Define
+            services, availability, and even add branding elements.
+          </p>
+        </div>
+        <div className="text-center p-6 border border-purple-400 shadow-lg rounded-md">
+          <h3 className="text-xl font-semibold mb-2">📅 Seamless Scheduling</h3>
+          <p className="text-gray-500">
+            Manage appointments, sync with calendars, and keep your schedule
+            organized in one place.
           </p>
         </div>
         <div className="text-center p-6 border border-purple-400 shadow-lg rounded-md">
           <h3 className="text-xl font-semibold mb-2">🔒 Secure Payments</h3>
           <p className="text-gray-500">
-            Hassle-free and secure payment integrations for your business.
+            Accept payments securely and provide clients with peace of mind when
+            booking.
           </p>
         </div>
         <div className="text-center p-6 border border-purple-400 shadow-lg rounded-md">
-          <h3 className="text-xl font-semibold mb-2">📊 Analytics Dashboard</h3>
+          <h3 className="text-xl font-semibold mb-2">📊 Data Insights</h3>
           <p className="text-gray-500">
-            Track bookings, revenue, and client interactions with powerful
-            insights.
-          </p>
-        </div>
-        <div className="text-center p-6 border border-purple-400 shadow-lg rounded-md">
-          <h3 className="text-xl font-semibold mb-2">📲 Mobile-Friendly</h3>
-          <p className="text-gray-500">
-            Fully responsive design to ensure seamless booking on any device.
-          </p>
-        </div>
-        <div className="text-center p-6 border border-purple-400 shadow-lg rounded-md">
-          <h3 className="text-xl font-semibold mb-2">🔄 Easy Rescheduling</h3>
-          <p className="text-gray-500">
-            Allow clients to reschedule or cancel appointments with ease.
+            Get actionable insights on bookings, client behavior, and revenue to
+            grow your business.
           </p>
         </div>
         <div className="text-center p-6 border border-purple-400 shadow-lg rounded-md">
           <h3 className="text-xl font-semibold mb-2">🤝 Client Management</h3>
           <p className="text-gray-500">
-            Keep track of your clients and their booking history in one place.
-          </p>
-        </div>
-        <div className="text-center p-6 border border-purple-400 shadow-lg rounded-md">
-          <h3 className="text-xl font-semibold mb-2">
-            🔧 Service Customization
-          </h3>
-          <p className="text-gray-500">
-            Define services, set availability, and customize options to suit
-            your business.
-          </p>
-        </div>
-        <div className="text-center p-6 border border-purple-400 shadow-lg rounded-md">
-          <h3 className="text-xl font-semibold mb-2">📥 Email Reminders</h3>
-          <p className="text-gray-500">
-            Automated email reminders to reduce no-shows and keep clients
-            informed.
+            Store client details and booking history to build stronger
+            relationships.
           </p>
         </div>
       </div>
