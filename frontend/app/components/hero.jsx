@@ -61,7 +61,7 @@ export default function Hero() {
           src="/undraw_booking.svg" // Replace with the path to your Undraw illustration
           alt="Booking Illustration"
           width={500}
-          height={300}
+          height={400}
           className="rounded-md"
         />
       </motion.div>
