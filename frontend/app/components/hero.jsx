@@ -1,70 +1,21 @@
 "use client";
 
-import Link from "next/link";
-import { motion } from "framer-motion";
-import Image from "next/image";
-
 export default function Hero() {
   return (
-    <main className="py-8 mt-20 text-center bg-white">
-      {/* Heading and Subheading */}
-      <div className="mb-8">
-        <motion.h1
-          className="text-3xl md:text-6xl mb-4 font-bold"
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Find <span className="text-purple-500">Experts</span>. Grow{" "}
-          <span className="text-purple-500">Businesses</span>
-        </motion.h1>
-        <motion.h3
-          className="mb-6 text-xl font-medium"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2 }}
-        >
-          Search and book trusted services in seconds, or join our platform to
-          connect with more customers.
-        </motion.h3>
+    <section className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white py-20 px-6 text-center">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl lg:text-6xl font-bold mb-4">
+          Effortless Booking,{" "}
+          <span className="animate-pulse">Customized for You</span>
+        </h1>
+        <p className="text-lg lg:text-2xl font-light mb-8">
+          Whether you're running a salon, managing a clinic, or renting
+          apartments, Clyne adapts to your business needs seamlessly.
+        </p>
+        <button className="bg-white text-indigo-600 font-semibold px-6 py-3 rounded-full shadow-md hover:scale-105 hover:bg-gray-100 transition">
+          Get Started Now
+        </button>
       </div>
-
-      {/* Buttons */}
-      <motion.div
-        className="flex space-x-4 justify-center"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, delay: 0.3 }}
-      >
-        <Link
-          className="py-1 px-6 bg-purple-500 hover:bg-purple-700 text-white rounded-sm font-bold"
-          href="/register"
-        >
-          Get Started
-        </Link>
-        <Link
-          className="py-1 px-6 rounded-sm hover:bg-purple-50 text-purple-500 border-2 border-purple-500 font-bold"
-          href="/search"
-        >
-          Search
-        </Link>
-      </motion.div>
-
-      {/* Illustration */}
-      <motion.div
-        className="mt-12 flex justify-center"
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <Image
-          src="/undraw_booking.svg" // Replace with the path to your Undraw illustration
-          alt="Booking Illustration"
-          width={500}
-          height={400}
-          className="rounded-md"
-        />
-      </motion.div>
-    </main>
+    </section>
   );
-} 
+}
