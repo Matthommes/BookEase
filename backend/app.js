@@ -19,7 +19,7 @@ import cron from "node-cron";
 import axios from "axios";
 
 // URL of your deployed server
-const serverUrl = "https://booksmartly.onrender.com/ping";
+const serverUrl = "https://booksmartly.onrender.com/api/auth/ping";
 
 // Cron job to ping the server every 5 minutes
 cron.schedule("*/5 * * * *", async () => {
