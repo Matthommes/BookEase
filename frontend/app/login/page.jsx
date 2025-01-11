@@ -24,7 +24,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({})
+    setErrors({});
     if (!validateEmail(formData.email)) {
       setErrors((prev) => ({
         ...prev,
@@ -55,7 +55,7 @@ export default function Login() {
       const errorMessage = await handleApiError(error);
       setErrors({ server: errorMessage });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   };
 

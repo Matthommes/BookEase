@@ -5,6 +5,7 @@ import { sendRegisterMail } from "../constants/emails/registerMail.js";
 import { addMinutes } from "date-fns";
 import { sendLoginEmail } from "../constants/emails/loginEmail.js";
 import { generateToken } from "../config/jwt.js";
+import cron from "node-cron";
 
 export const registerUser = async (req, res) => {
   try {
@@ -31,9 +32,13 @@ export const registerUser = async (req, res) => {
       user: { id: newUser.id, email: newUser.email },
     });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error", error });
-    console.log(error);
+    console.error("Error in registerUser:", error.message);
+    return res.status(code.INTERNAL_SERVER_ERROR).json({
+      message: "Failed to register user",
+      error: error.message,
+    });
   }
+
 };
 
 export const loginUser = async (req, res) => {
@@ -71,30 +76,37 @@ export const loginUser = async (req, res) => {
 export const verifyToken = async (req, res) => {
   const { token } = req.query;
 
-  if (!token)
+  if (!token) {
     return res.status(code.BAD_REQUEST).json({ message: "No token provided!" });
-  const user = await prisma.user.findUnique({ where: { token } });
-  if (user) {
-     await prisma.user.update({
-       where: { id: user.id },
-       data: { token: "", tokenExp: null },
-     });
-     res.json({ message: "Token verified", user: tokenPayload });
   }
-  if (!user)
+
+  const user = await prisma.user.findUnique({ where: { token } });
+
+  if (!user) {
     return res.status(code.NOT_FOUND).json({ message: "User not found" });
+  }
 
-  if (new Date(user.tokenExp) < new Date())
+  if (new Date(user.tokenExp) < new Date()) {
     return res.status(code.FORBIDDEN).json({ message: "Token expired" });
+  }
 
+  // Generate the JWT token after verification
   const tokenPayload = generateToken({
     userId: user.id,
     userEmail: user.email,
   });
- 
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { token: "", tokenExp: null },
+  });
+
+  res.json({ message: "Token verified", user: tokenPayload });
 };
 
 export const getAllUsers = async (req, res) => {
   const users = await prisma.user.findMany();
-  res.status(code.ACCEPTED).json(users);
+  res.status(code.OK).json(users);
 };
+
+// cron.schedule();
