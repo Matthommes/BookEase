@@ -7,25 +7,28 @@ const AuthContext = createContext();
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
- const verify = async (token) => {
-   try {
-     const response = await fetch(
-       `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify?token=${token}`,
-       { method: "POST" }
-     );
+const verify = async (token) => {
+  const controller = new AbortController();
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/auth/verify?token=${token}`,
+      { method: "POST", signal: controller.signal }
+    );
 
-     if (!response.ok) {
-       const data = await response.json();
-       throw data; 
-     }
+    if (!response.ok) {
+      const error = await response.json();
+      throw error;
+    }
 
-     const data = await response.json(); 
-     setUser(data.user); 
-   } catch (error) {
-     setUser(null); 
-     throw error;
-   }
- };
+    const data = await response.json();
+    setUser(data.user);
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      setUser(null);
+      throw error;
+    }
+  }
+};
 
 
   return (
@@ -36,7 +39,7 @@ export default function AuthProvider({ children }) {
 }
 
 // Custom hook to use the AuthContext
-export function   useAuth() {
+export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");

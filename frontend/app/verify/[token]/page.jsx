@@ -6,10 +6,11 @@ import { useAuth } from "@/app/context/authContext";
 import { handleApiError } from "@/lib/apiError";
 
 export default function TokenPage({ params }) {
-  const {token} = use(params);
+  const { token } = use(params);
   const router = useRouter();
   const [error, setError] = useState();
   const { verify } = useAuth();
+  const [isVerifying, setIsVerifying] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -18,20 +19,21 @@ export default function TokenPage({ params }) {
       return;
     }
 
-    const verifyToken = async () => {
-      try {
-        await verify(token);
-        router.push("/onboarding/welcome");
-      } catch (error) {
-        const errorMessage = await handleApiError(error);
-        setError(errorMessage);
-        router.push("/login");
-      }
-    };
-
-    verifyToken();
-  }, [token, verify, router]);
-
+    if (!isVerifying) {
+      setIsVerifying(true);
+      const verifyToken = async () => {
+        try {
+          await verify(token);
+          router.push("/onboarding/welcome");
+        } catch (error) {
+          const errorMessage = await handleApiError(error);
+          setError(errorMessage);
+          router.push("/login");
+        }
+      };
+      verifyToken();
+    }
+  }, [token, verify, router, isVerifying]);
   return (
     <main className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-2xl font-bold">

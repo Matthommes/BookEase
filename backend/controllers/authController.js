@@ -38,7 +38,6 @@ export const registerUser = async (req, res) => {
       error: error.message,
     });
   }
-
 };
 
 export const loginUser = async (req, res) => {
@@ -75,15 +74,17 @@ export const loginUser = async (req, res) => {
 
 export const verifyToken = async (req, res) => {
   const { token } = req.query;
-
+  console.log(token);
   if (!token) {
     return res.status(code.BAD_REQUEST).json({ message: "No token provided!" });
   }
 
   const user = await prisma.user.findUnique({ where: { token } });
-
+  console.log(user);
   if (!user) {
-    return res.status(code.NOT_FOUND).json({ message: "User not found" });
+    return res
+      .status(code.NOT_FOUND)
+      .json({ message: "No user with that token." });
   }
 
   if (new Date(user.tokenExp) < new Date()) {
@@ -96,12 +97,11 @@ export const verifyToken = async (req, res) => {
     userEmail: user.email,
   });
 
+  res.status(code.OK).json({ message: "Token verified", user: tokenPayload });
   await prisma.user.update({
     where: { id: user.id },
     data: { token: "", tokenExp: null },
   });
-
-  res.json({ message: "Token verified", user: tokenPayload });
 };
 
 export const getAllUsers = async (req, res) => {
