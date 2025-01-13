@@ -41,7 +41,7 @@ body {
 @media (min-width: 330px) {
   /* Small screens (sm) */
   :root {
-    --universal-padding: 1rem;
+    --universal-padding: ;
     --universal-top-padding: 1rem;
   }
 }

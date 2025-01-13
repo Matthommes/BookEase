@@ -63,7 +63,7 @@ export const loginUser = async (req, res) => {
     await prisma.user.update({ where: { email }, data: { token, tokenExp } });
 
     await sendLoginEmail(email, token);
-    res.status(code.OK).json({ message: "Login successful" });
+    res.status(code.OK).json({ message: "Login successful",  email:user.email  });
   } catch (error) {
     console.error(error);
     res
@@ -74,13 +74,12 @@ export const loginUser = async (req, res) => {
 
 export const verifyToken = async (req, res) => {
   const { token } = req.query;
-  console.log(token);
+
   if (!token) {
     return res.status(code.BAD_REQUEST).json({ message: "No token provided!" });
   }
 
   const user = await prisma.user.findUnique({ where: { token } });
-  console.log(user);
   if (!user) {
     return res
       .status(code.NOT_FOUND)
