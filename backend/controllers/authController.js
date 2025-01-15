@@ -7,6 +7,19 @@ import { sendLoginEmail } from "../constants/emails/loginEmail.js";
 import { generateToken } from "../config/jwt.js";
 import cron from "node-cron";
 
+// cookies
+
+export const setCookie = (res, token, expiresIn) => {
+  const cookieOptions = {
+    expires: expiresIn,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  };
+  res.cookie("token", token, cookieOptions);
+};
+
+// REGISTER NEW USER!
+
 export const registerUser = async (req, res) => {
   try {
     const { email } = req.body;
@@ -27,10 +40,17 @@ export const registerUser = async (req, res) => {
     });
     await sendRegisterMail(newUser.email, newUser.token);
 
+    // Generate the JWT token after verification
+    const tokenPayload = generateToken({
+      userId: user.id,
+      userEmail: user.email,
+    });
+
     res.status(code.CREATED).json({
       message: "Successfully created a new user!",
       user: { id: newUser.id, email: newUser.email },
     });
+    setCookie(res, tokenPayload, "30d");
   } catch (error) {
     console.error("Error in registerUser:", error.message);
     return res.status(code.INTERNAL_SERVER_ERROR).json({
@@ -63,7 +83,9 @@ export const loginUser = async (req, res) => {
     await prisma.user.update({ where: { email }, data: { token, tokenExp } });
 
     await sendLoginEmail(email, token);
-    res.status(code.OK).json({ message: "Login successful",  email:user.email  });
+    res
+      .status(code.OK)
+      .json({ message: "Login successful", email: user.email });
   } catch (error) {
     console.error(error);
     res
