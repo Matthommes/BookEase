@@ -1,4 +1,5 @@
-import { verifyToken } from "../controllers/authController.js";
+
+import { verifyJwt } from "../config/jwt.js";
 import { HttpStatusCodes as code } from "../constants/httpStatusCodes.js";
 
 // middleware to authenticate user JWT token
@@ -8,9 +9,13 @@ export const authenticate = (req, res, next) => {
     const cookie = req.cookies.cookie;
 
     if (!cookie)
-      return res.status(code.UNAUTHORIZED).json({ message: "No Token" });
+      return res.status(code.UNAUTHORIZED).json({ message: "No Token provided" });
 
-    if(cookie.expiresIn > )
+    const decode = verifyJwt(cookie);
+    req.user = decode
+
+    next()
+    
   } catch (error) {
     console.error(error);
     res
