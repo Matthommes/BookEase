@@ -1,14 +1,13 @@
 import { HttpStatusCodes as code } from "../constants/httpStatusCodes.js";
 import { prisma } from "../config/prisma.js";
-
 import { sendRegisterMail } from "../constants/emails/registerMail.js";
-import { addMinutes } from "date-fns";
+import { addMinutes, subHours } from "date-fns";
 import { sendLoginEmail } from "../constants/emails/loginEmail.js";
 import { generateToken } from "../config/jwt.js";
 import { generateEmailToken } from "../utils/helpers.js";
+import cron from "node-cron";
 
 // cookies
-
 export const setCookie = (res, token, expiresIn) => {
   const cookieOptions = {
     expires: expiresIn,
@@ -82,7 +81,6 @@ export const loginUser = async (req, res) => {
         .json({ message: "Email doesn't exist" });
 
     // GENERATE LOGIN TOKEN
-
     const token = generateEmailToken();
     const tokenExp = addMinutes(new Date(), 5);
 
@@ -150,3 +148,13 @@ export const deleteAllUsers = async (req, res) => {
       .json({ message: "Failed to delete users", error: error.message });
   }
 };
+
+cron.schedule("0 * * * *", async () => {
+  const staleAccount = await prisma.user.deleteMany({
+    where: {
+      isVerified: false,
+      createdAt: { lt: subHours(new Date(), 24) },
+    },
+  });
+  console.log(`Deleted ${staleAccount.count} stale accounts`);
+});
