@@ -38,16 +38,14 @@ export default function Register() {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
+        `http://localhost:5000/api/auth/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify(formData),
         }
       );
-      console.log("Response Status:", response.status);
-      console.log("Response Headers:", response.headers);
-
       if (!response.ok) {
         const data = await response.json();
         throw data;

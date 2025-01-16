@@ -1,4 +1,3 @@
-
 import { verifyJwt } from "../config/jwt.js";
 import { HttpStatusCodes as code } from "../constants/httpStatusCodes.js";
 
@@ -9,13 +8,14 @@ export const authenticate = (req, res, next) => {
     const cookie = req.cookies.cookie;
 
     if (!cookie)
-      return res.status(code.UNAUTHORIZED).json({ message: "No Token provided" });
+      return res
+        .status(code.UNAUTHORIZED)
+        .json({ message: "No Token provided" });
 
     const decode = verifyJwt(cookie);
-    req.user = decode
+    req.user = decode;
 
-    next()
-    
+    next();
   } catch (error) {
     console.error(error);
     res

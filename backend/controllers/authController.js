@@ -33,14 +33,14 @@ export const registerUser = async (req, res) => {
         .json({ message: "A user with this email already exists!!" });
 
     if (userExists && !userExists.isVerified) {
-      const token = await generateEmailToken();
+      const token =  generateEmailToken();
       const tokenExp = addMinutes(new Date(), 5);
 
+      await sendRegisterMail(email, token);
       await prisma.user.update({
         where: { email },
         data: { token, tokenExp },
       });
-      await sendRegisterMail(email, token);
       return res
         .status(code.OK)
         .json({ message: "Verification email resent!" });
