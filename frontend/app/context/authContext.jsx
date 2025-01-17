@@ -12,7 +12,7 @@ export default function AuthProvider({ children }) {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify?token=${token}`,
-        { method: "POST", signal: controller.signal }
+        { method: "POST", credentials: "include", signal: controller.signal }
       );
 
       if (!response.ok) {

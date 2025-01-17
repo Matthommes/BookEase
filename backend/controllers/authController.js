@@ -105,7 +105,7 @@ export const verifyToken = async (req, res) => {
     return res.status(code.BAD_REQUEST).json({ message: "No token provided!" });
   }
 
-  const user = await prisma.user.findUnique({ where: { token } });
+  const user = await prisma.user.findFirst({ where: { token } });
   if (!user) {
     return res
       .status(code.NOT_FOUND)
