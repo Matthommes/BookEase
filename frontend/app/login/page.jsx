@@ -19,6 +19,7 @@ export default function Login() {
               alt="BookSmartly Logo"
               className="h-auto w-16 sm:w-20 lg:w-24 mb-10"
               priority
+              
             />
           </div>
         </Link>
@@ -43,7 +44,7 @@ export default function Login() {
 
         <hr className="border-purple-300 w-full my-4" />
 
-       <LoginForm />
+        <LoginForm />
         <p className="text-left text-gray-500 font-medium text-xs">
           Don't have an account yet?{" "}
           <Link

@@ -6,30 +6,28 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function Verify() {
-  const [email, setEmail] = useState(null); // Start with `null` to indicate "loading"
+  const [email, setEmail] = useState(null);
 
   useEffect(() => {
     try {
       const user = localStorage.getItem("user");
       if (user) {
-        setEmail(user); // Set the email if found in localStorage
+        setEmail(user);
       } else {
-        setEmail("your registered email"); // Fallback value
+        setEmail("your registered email"); 
       }
     } catch (error) {
       console.error("Error accessing localStorage:", error.message);
-      setEmail("your registered email"); // Fallback value in case of an error
+      setEmail("your registered email"); 
     }
   }, []);
-
-  // Show nothing (or a loading indicator) while email is being fetched
+  
   if (email === null) {
-    return <p className="text-center mt-6">Loading...</p>; // Or a spinner/loader
+    return <p className="text-center mt-6">Loading...</p>; 
   }
 
   return (
     <main className="flex flex-col items-center h-screen">
-      {/* Divider and Logo */}
       <hr className="border-purple-300 w-full my-6" />
       <Link href="/" aria-label="Navigate to homepage">
         <Image

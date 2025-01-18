@@ -22,7 +22,7 @@ export const setCookie = (res, token, expiresIn) => {
 export const registerUser = async (req, res) => {
   try {
     const { email } = req.body;
-    
+
     if (!email)
       return res
         .status(code.BAD_REQUEST)
@@ -34,7 +34,7 @@ export const registerUser = async (req, res) => {
         .json({ message: "A user with this email already exists!!" });
 
     if (userExists && !userExists.isVerified) {
-      const token =  generateEmailToken();
+      const token = generateEmailToken();
       const tokenExp = addMinutes(new Date(), 5);
 
       await sendRegisterMail(email, token);
@@ -100,8 +100,7 @@ export const loginUser = async (req, res) => {
 };
 
 export const verifyToken = async (req, res) => {
-  const { token } = req.query;
-
+  const { token } = req.body;
   if (!token) {
     return res.status(code.BAD_REQUEST).json({ message: "No token provided!" });
   }

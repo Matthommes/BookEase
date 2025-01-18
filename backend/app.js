@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "https://booksmartly.vercel.app" || "http://localhost:5000",
+    origin: ["https://booksmartly.vercel.app", "http://localhost:3000"],
     credentials: true,
   })
 );
