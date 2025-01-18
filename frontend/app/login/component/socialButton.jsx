@@ -8,4 +8,4 @@ export default function SocialButton({ logoSrc, altText, label }) {
       {label}
     </button>
   );
- }
+}

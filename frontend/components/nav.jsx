@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import brandLogo from "../../public/brand-logo.png";
+import brandLogo from "@/public/brand-logo.png";
 
 export default function NavBar() {
   return (

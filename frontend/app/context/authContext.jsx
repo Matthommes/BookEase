@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useMemo } from "react";
+import axios from 'axios';
 
 const AuthContext = createContext();
 
@@ -10,14 +11,15 @@ export default function AuthProvider({ children }) {
   const verify = async (token) => {
     const controller = new AbortController();
     try {
-      const response = await fetch(
+      const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify?token=${token}`,
-        { method: "POST", credentials: "include", signal: controller.signal }
+        { withCredentials: true, signal: controller.signal }
       );
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Verification failed.");
+      if (response.status === 200 || response.status === 201) {
+        router.push("/verify");
+      } else {
+        throw new Error("An unexpected error occurred.");
       }
 
       const data = await response.json();

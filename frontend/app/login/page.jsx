@@ -11,6 +11,7 @@ import SocialButton from "./component/socialButton";
 import brandLogo from "../../public/brand-logo.png";
 import { useRouter } from "next/navigation";
 import { handleApiError } from "@/lib/apiError";
+import axios from 'axios'
 
 export default function Login() {
   const router = useRouter();
@@ -34,20 +35,20 @@ export default function Login() {
     }
     setIsSubmitting(true);
     try {
-      const response = await fetch(
+      const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
+        formData,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
         }
       );
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw data;
+      if (response.status === 200 || response.status === 201) {
+        router.push("/verify");
+      } else {
+        throw new Error("An unexpected error occurred.");
       }
 
       const user = await response.json();

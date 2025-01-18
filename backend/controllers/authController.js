@@ -22,6 +22,7 @@ export const setCookie = (res, token, expiresIn) => {
 export const registerUser = async (req, res) => {
   try {
     const { email } = req.body;
+    
     if (!email)
       return res
         .status(code.BAD_REQUEST)
