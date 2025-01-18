@@ -16,7 +16,7 @@ export default function TokenPage({ params }) {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_DEV_API}/api/auth/verify`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify`,
         { token },
         {
           headers: {

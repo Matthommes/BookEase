@@ -12,21 +12,29 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+// Add viewport export for theme color
+export const viewport = {
+  themeColor: "#007BFF",
+};
+
 export const metadata = {
-  title: "BookSmartly",
+  title: "Clyne",
   description: "A customizable booking platform.",
+  icons: {
+    // Simplified icon configuration
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon-16x16.png",
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
-        {/* <link rel="manifest" href="/manifest.json" /> */}
-        <meta name="theme-color" content="#007BFF" />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >{children}
+      >
+        {children}
       </body>
     </html>
   );
