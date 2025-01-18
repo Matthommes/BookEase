@@ -1,73 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
+
 import Link from "next/link";
 import Image from "next/image";
 import SocialButton from "./component/socialButton";
-import brandLogo from "../../public/brand-logo.png";
-import { useRouter } from "next/navigation";
-import { handleApiError } from "@/lib/apiError";
-import axios from 'axios'
+import brandLogo from "@/public/brand-logo.png";
+import LoginForm from "./component/loginForm";
+
 
 export default function Login() {
-  const router = useRouter();
-  const [formData, setFormData] = useState({ email: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors({});
-    if (!validateEmail(formData.email)) {
-      setErrors((prev) => ({
-        ...prev,
-        email: "Please enter a valid email address.",
-      }));
-      return;
-    }
-    setIsSubmitting(true);
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.status === 200 || response.status === 201) {
-        router.push("/verify");
-      } else {
-        throw new Error("An unexpected error occurred.");
-      }
-
-      const user = await response.json();
-      console.log(user.email);
-      localStorage.setItem("userEmail", user.email);
-      router.push("/verify");
-    } catch (error) {
-      console.log(error);
-      const errorMessage = await handleApiError(error);
-      setErrors({ server: errorMessage });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
-
   return (
     <div className="h-screen flex justify-center items-center p-4 sm:p-8">
       <div className="w-full max-w-sm flex flex-col text-left p-8">
@@ -102,45 +43,16 @@ export default function Login() {
 
         <hr className="border-purple-300 w-full my-4" />
 
-        <form
-          onSubmit={handleSubmit}
-          className="w-full max-w-sm flex flex-col text-left"
-        >
-          <div className="grid w-full max-w-sm items-center gap-1.5 space-y-2 mb-4">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              type="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email"
-              className="mt-1 mb-3 border-purple-600 focus-visible:ring-purple-400"
-            />
-            {errors && (
-              <p className="text-red-500 text-xs">
-                {errors.email || errors.server}
-              </p>
-            )}
-            {isSubmitting ? (
-              <Button disabled className="bg-purple-500">
-                <Loader2 className="animate-spin" />
-              </Button>
-            ) : (
-              <Button className="font-semibold bg-purple-600 hover:bg-purple-700">
-                Continue
-              </Button>
-            )}
-          </div>
-          <p className="text-left text-gray-500 font-medium text-xs">
-            Don't have an account yet?{" "}
-            <Link
-              href="/register"
-              className="text-purple-400 underline hover:text-purple-600"
-            >
-              Sign up
-            </Link>
-          </p>
-        </form>
+       <LoginForm />
+        <p className="text-left text-gray-500 font-medium text-xs">
+          Don't have an account yet?{" "}
+          <Link
+            href="/register"
+            className="text-purple-400 underline hover:text-purple-600"
+          >
+            Sign up
+          </Link>
+        </p>
       </div>
     </div>
   );

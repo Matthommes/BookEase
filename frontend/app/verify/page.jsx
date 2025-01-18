@@ -10,7 +10,7 @@ export default function Verify() {
 
   useEffect(() => {
     try {
-      const user = localStorage.getItem("userEmail");
+      const user = localStorage.getItem("user");
       if (user) {
         setEmail(user); // Set the email if found in localStorage
       } else {
