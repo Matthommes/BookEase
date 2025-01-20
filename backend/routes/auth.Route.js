@@ -39,7 +39,7 @@ router.get(
     }
     const token = generateToken(user);
     setCookie(res, token, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000));
-    res.redirect(`${process.env.FRONTEND_URL_TEST}/onboarding/welcome`);
+    res.redirect(`${process.env.FRONTEND_URL}/onboarding/welcome`);
   }
 );
 
