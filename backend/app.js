@@ -2,11 +2,10 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import session from "express-session";
 import passport from "passport";
 import cron from "node-cron";
 import axios from "axios";
-import { connectPrisma, prisma } from "./config/prisma.js";
+import { connectPrisma } from "./config/prisma.js";
 import authRoute from "./routes/auth.Route.js";
 
 // Load environment variables
