@@ -4,7 +4,7 @@ import { useCallback } from "react";
 
 export default function SocialButton({ provider, logoSrc, altText, label }) {
   const handleLogin = useCallback(() => {
-    window.location.href = `${process.env.NEXT_PUBLIC_DEV_API}/api/auth/${provider}`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/${provider}`;
   }, [provider]);
   return (
     <button
