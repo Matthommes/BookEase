@@ -1,6 +1,14 @@
-export default function SocialButton({ logoSrc, altText, label }) {
+"use client";
+
+import { useCallback } from "react";
+
+export default function SocialButton({ provider, logoSrc, altText, label }) {
+  const handleLogin = useCallback(() => {
+    window.location.href = `${process.env.NEXT_PUBLIC_DEV_API}/api/auth/${provider}`;
+  }, [provider]);
   return (
     <button
+      onClick={handleLogin}
       aria-label={altText}
       className="w-full flex items-center justify-center px-4 py-1 border border-purple-300 rounded-md font-medium text-gray-500 bg-transparent hover:bg-purple-50 transition ease-in-out duration-200"
     >

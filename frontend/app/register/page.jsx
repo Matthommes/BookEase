@@ -29,11 +29,13 @@ export default function Register() {
 
         <div className="space-y-4 w-full mb-6">
           <SocialButton
+            provider="google"
             logoSrc="/google-logo.svg"
             altText="Google Logo"
             label="Continue with Google"
           />
           <SocialButton
+            provider="apple"
             logoSrc="/apple-logo.svg"
             altText="Apple Logo"
             label="Continue with Apple"
