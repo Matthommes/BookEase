@@ -38,6 +38,7 @@ router.get(
       });
     }
     const token = generateToken(user);
+    console.log(token)
     setCookie(res, token, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000));
     res.redirect(`${process.env.FRONTEND_URL}/onboarding/welcome`);
   }
