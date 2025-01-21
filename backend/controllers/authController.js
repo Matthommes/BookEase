@@ -15,7 +15,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `https://booksmartly.onrender.com/api/auth/google/callback`,
+      callbackURL: `/api/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -30,6 +30,7 @@ passport.use(
             data: {
               email: profile.emails[0].value,
               isVerified: true,
+              token: ""
             },
           });
         }
@@ -137,9 +138,10 @@ export const loginUser = async (req, res) => {
     await prisma.user.update({ where: { email }, data: { token, tokenExp } });
 
     await sendLoginEmail(email, token);
-    res
-      .status(code.OK)
-      .json({ message: "Login successful", email: user.email });
+    res.status(code.OK).json({
+      message: "Login email sent. Please verify your email.",
+      email: user.email,
+    });
   } catch (error) {
     console.error(error);
     res
