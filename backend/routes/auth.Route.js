@@ -14,7 +14,7 @@ import { setCookie } from "../utils/cookie.js";
 
 export const router = Router();
 
-passport
+
 // Google Authentication
 router.get(
   "/google",
@@ -54,5 +54,7 @@ router.delete("/delete", deleteAllUsers);
 router.get("/ping", (req, res) =>
   res.status(200).send("The server never sleeps")
 );
-
+router.get("/", (req, res) => {
+  res.status(200).send("OK");
+});
 export default router;

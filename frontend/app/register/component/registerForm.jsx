@@ -83,7 +83,7 @@ export default function RegisterForm() {
         )}
 
         {isSubmitting ? (
-          <Button disabled className="bg-purple-500">
+          <Button disabled className="bg-purple-500 hover:cursor-not-allowed">
             <Loader2 className="animate-spin" />
           </Button>
         ) : (
