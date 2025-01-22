@@ -1,10 +1,11 @@
 "use client";
 
+import { serverUrl } from "@/app/register/utils/urls";
 import { useCallback } from "react";
 
 export default function SocialButton({ provider, logoSrc, altText, label }) {
   const handleLogin = useCallback(() => {
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/${provider}`;
+    window.location.href = `${serverUrl}/api/auth/${provider}`;
   }, [provider]);
   return (
     <button

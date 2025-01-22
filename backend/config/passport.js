@@ -1,7 +1,7 @@
 import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
 import { prisma } from "../config/prisma.js";
-
+import { serverUrl } from "../utils/urls.js";
 
 passport.use(
   new GoogleStrategy(
@@ -27,6 +27,7 @@ passport.use(
           });
           return done(null, newUser);
         }
+        return done(null, user);
       } catch (error) {
         return done(error, null);
       }

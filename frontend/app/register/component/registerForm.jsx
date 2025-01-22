@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { validate } from "../utils/formValidation";
+import { frontendUrl } from "../utils/urls";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -41,7 +42,7 @@ export default function RegisterForm() {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_DEV_API}/api/auth/register`,
+        `${frontendUrl}/api/auth/register`,
         formData,
         {
           headers: {

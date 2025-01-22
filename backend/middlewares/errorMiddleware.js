@@ -1,4 +1,6 @@
 import logger from "../config/winston.js";
+
+// Custom error class
 export class AppError extends Error {
   constructor(message, statusCode) {
     super(message);
@@ -10,10 +12,13 @@ export class AppError extends Error {
   }
 }
 
-// Handle Prisma Errors
+// Handle Prisma-specific errors
 const handlePrismaError = (err) => {
   if (err.code === "P2002") {
-    return new AppError("This value already exists in our database.", 400);
+    return new AppError(
+      "Duplicate field value. Please use a different value.",
+      400
+    );
   }
   if (err.code === "P2025") {
     return new AppError("Record not found.", 404);
@@ -21,66 +26,48 @@ const handlePrismaError = (err) => {
   return new AppError("Database error occurred.", 500);
 };
 
-// Handle JWT Errors
+// Handle JWT errors
 const handleJWTError = () =>
   new AppError("Invalid token. Please log in again.", 401);
 
 const handleJWTExpiredError = () =>
   new AppError("Your token has expired. Please log in again.", 401);
 
-// Main Error Handling Middleware
+// Main error handler
 export const errorHandler = (err, req, res, next) => {
   logger.error(err.message, { stack: err.stack });
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || "error";
+  const statusCode = err.statusCode || 500;
+  const status = err.status || "error";
 
-  if (process.env.NODE_ENV === "development") {
-    // Development Error Response
-    return res.status(err.statusCode).json({
-      status: err.status,
-      error: err,
-      message: err.message,
-      stack: err.stack,
-    });
+  const response = {
+    success: false,
+    status,
+    message: err.message || "Something went wrong!",
+  };
+
+  if (statusCode === 401) {
+    response.tip = "Ensure you're logged in or your session hasn't expired.";
+  } else if (statusCode === 403) {
+    response.tip = "You don't have permission to access this resource.";
+  } else if (statusCode === 404) {
+    response.tip = `The resource at '${req.originalUrl}' was not found.`;
+  } else if (statusCode === 500) {
+    response.tip = "This seems to be an issue on our end. We're working on it!";
   }
 
-  // Production Error Response
-  if (process.env.NODE_ENV === "production") {
-    let error = { ...err };
-    error.message = err.message;
-
-    // Handle specific errors
-    if (err.name === "JsonWebTokenError") error = handleJWTError();
-    if (err.name === "TokenExpiredError") error = handleJWTExpiredError();
-    if (err.name === "PrismaClientKnownRequestError")
-      error = handlePrismaError(err);
-
-    // Operational, trusted error: send message to client
-    if (err.isOperational) {
-      return res.status(error.statusCode).json({
-        status: error.status,
-        message: error.message,
-      });
-    }
-
-    // Programming or other unknown error: don't leak error details
-    console.error("ERROR 💥", err);
-    return res.status(500).json({
-      status: "error",
-      message: "Something went wrong!",
-    });
-  }
+  // Send response
+  return res.status(statusCode).json(response);
 };
 
-// Not Found Handler
+// 404 Not Found Handler
 export const notFound = (req, res, next) => {
   const error = new AppError(
-    `Can't find ${req.originalUrl} on this server!`,
+    `Cannot find ${req.originalUrl} on this server!`,
     404
   );
   next(error);
 };
 
-// Async Handler (Removes try-catch boilerplate)
+// Async handler to reduce try-catch boilerplate
 export const asyncHandler = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);

@@ -1,9 +1,10 @@
 import { sendMail } from "../../config/mailer.js";
 import { config } from "dotenv";
+import { frontendUrl } from "../../utils/urls.js";
 config();
 
 export const sendLoginEmail = async (email, token) => {
-  const loginLink = `${process.env.FRONTEND_URL}/verify/${token}`;
+  const loginLink = `${frontendUrl}/verify/${token}`;
   const currentYear = new Date().getFullYear();
 
   const emailSubject = "Your Login Link for BookSmartly";

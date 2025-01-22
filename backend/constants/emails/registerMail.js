@@ -1,12 +1,12 @@
 import { sendMail } from "../../config/mailer.js";
 import { config } from "dotenv";
+import { frontendUrl } from "../../utils/urls.js";
 
 
 config();
 
-
 export const sendRegisterMail = async (email, token) => {
-  const registrationLink = `${process.env.FRONTEND_URL}/verify/${token}`;
+  const registrationLink = `${frontendUrl}/verify/${token}`;
   const currentYear = new Date().getFullYear();
 
   const emailSubject = "Verify Your Email for BookSmartly";

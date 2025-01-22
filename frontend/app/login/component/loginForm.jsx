@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { validate } from "@/app/register/utils/formValidation";
+import { frontendUrl } from "@/app/register/utils/urls";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -40,7 +41,7 @@ export default function LoginForm() {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
+        `${frontendUrl}/api/auth/login`,
         formData,
         {
           headers: {

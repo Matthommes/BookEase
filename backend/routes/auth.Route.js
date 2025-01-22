@@ -1,5 +1,5 @@
+import passport from "../config/passport.js"
 import { Router } from "express";
-import passport from "passport";
 import {
   deleteAllUsers,
   getAllUsers,
@@ -9,9 +9,12 @@ import {
 } from "../controllers/authController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 import { frontendUrl } from "../utils/urls.js";
+import { generateToken } from "../config/jwt.js";
+import { setCookie } from "../utils/cookie.js";
 
 export const router = Router();
 
+passport
 // Google Authentication
 router.get(
   "/google",
