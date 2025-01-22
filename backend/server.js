@@ -3,11 +3,10 @@ import { disconnectPrisma } from "./config/prisma.js";
 
 const PORT = process.env.PORT || 4000;
 if (process.env.NODE_ENV === "production") {
-  process.env.DATABASE_URL = process.env.EXTERNAL_DATABASE_URL;
+  process.env.DATABASE_URL = process.env.DATABASE_URL_PROD;
 } else {
   process.env.DATABASE_URL = process.env.DATABASE_URL;
 }
-
 
 const gracefulShutdown = async () => {
   await disconnectPrisma();

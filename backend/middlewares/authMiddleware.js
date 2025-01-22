@@ -1,43 +1,19 @@
 import { verifyJwt } from "../config/jwt.js";
-import { HttpStatusCodes as code } from "../constants/httpStatusCodes.js";
-
-// middleware to authenticate user JWT token
+import { AppError } from "../middlewares/errorMiddleware.js";
 
 export const authenticate = (req, res, next) => {
   try {
-    const cookie = req.cookies.cookie;
+    const cookie = req.cookies?.cookie;
 
-    if (!cookie)
-      return res
-        .status(code.UNAUTHORIZED)
-        .json({ message: "No Token provided" });
+    if (!cookie) {
+      throw new AppError("No Token provided", 401);
+    }
 
     const decode = verifyJwt(cookie);
     req.user = decode;
 
     next();
   } catch (error) {
-    console.error(error);
-    res
-      .status(code.INTERNAL_SERVER_ERROR)
-      .json({ message: "Internal Server Error" });
+    next(error);
   }
 };
-
-// export const authenticate = (req, res, next) => {
-//   try {
-//     const token = req.headers["authorization"].split(" ")[1];
-
-//     if (!token)
-//       return res.status(code.UNAUTHORIZED).json({ message: "No token!" });
-
-//     const decode = verifyToken(token);
-//     if (!decode)
-//       return res.status(403).json({ message: "Invalid or expired token" });
-
-//     req.user = decode;
-//     next();
-//   } catch (error) {
-//     console.error("Unable to authenticate user");
-//   }
-// };

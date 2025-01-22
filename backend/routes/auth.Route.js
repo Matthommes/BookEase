@@ -1,4 +1,5 @@
 import { Router } from "express";
+import passport from "passport";
 import {
   deleteAllUsers,
   getAllUsers,
@@ -7,14 +8,11 @@ import {
   verifyToken,
 } from "../controllers/authController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
-import passport from "passport";
-import { generateToken } from "../config/jwt.js";
-import { setCookie } from "../utils/cookie.js";
+import { frontendUrl } from "../utils/urls.js";
 
 export const router = Router();
 
-// Google routes
-
+// Google Authentication
 router.get(
   "/google",
   passport.authenticate("google", {
@@ -23,7 +21,6 @@ router.get(
   })
 );
 
-// Google callback
 router.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -31,40 +28,28 @@ router.get(
     failureRedirect: "/login",
   }),
   (req, res) => {
-    const user = req.user;
+    const { user } = req;
     if (!user) {
-      return res.status(401).json({
-        message: "Authentication failed",
-      });
+      return res.status(401).json({ message: "Authentication failed" });
     }
+
     const token = generateToken(user);
-    console.log(token)
-    setCookie(res, token, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000));
-    res.redirect(`${process.env.FRONTEND_URL}/onboarding/welcome`);
+    setCookie(res, token, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)); // 30-day expiry
+    res.redirect(`${frontendUrl}/onboarding/welcome`);
   }
 );
 
-// // Apple routes
-// router.get(
-//   "/apple",
-//   passport.authenticate("apple", { scope: ["email", "name"] })
-// );
+// Apple Authentication (commented out unless required)
+// router.get("/apple", passport.authenticate("apple", { scope: ["email", "name"] }));
+// router.post("/apple/callback", appleCallbackHandler);
 
-// router.post(
-//   "/apple/callback",
-//   passport.authenticate("apple", { failureRedirect: "/login" }),
-//   (req, res) => {
-//     const token = generateToken(req.user);
-//     res.redirect(`${process.env.FRONTEND_URL_TEST}/onboarding/welcome`);
-//   }
-// );
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/verify", verifyToken);
 router.get("/all", authenticate, getAllUsers);
 router.delete("/delete", deleteAllUsers);
-router.get("/ping", (req, res) => {
-  return res.status(200).send("The server never sleeps");
-});
+router.get("/ping", (req, res) =>
+  res.status(200).send("The server never sleeps")
+);
 
 export default router;
