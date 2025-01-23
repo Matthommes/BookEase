@@ -45,7 +45,6 @@ app.use("/api/auth", authRoute);
 
 // Cron job: Ping server every 5 minutes to prevent sleeping
 const server = serverUrl + "/api/auth/ping"
-console.log(server)
 cron.schedule("*/5 * * * *", async () => {
   try {
     const response = await axios.get(server);

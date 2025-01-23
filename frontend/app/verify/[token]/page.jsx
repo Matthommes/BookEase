@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { handleApiError } from "@/lib/apiError";
 import axios from "axios";
-import { frontendUrl } from "@/app/register/utils/urls";
+import { serverUrl } from "@/app/register/utils/urls";
 
 export default function TokenPage({ params }) {
   const { token } = use(params);
@@ -17,7 +17,7 @@ export default function TokenPage({ params }) {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${frontendUrl}/api/auth/verify`,
+        `${serverUrl}/api/auth/verify`,
         { token },
         {
           headers: {
