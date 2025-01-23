@@ -8,6 +8,10 @@ if (process.env.NODE_ENV === "production") {
   process.env.DATABASE_URL = process.env.DATABASE_URL;
 }
 
+console.log("Current NODE_ENV:", process.env.NODE_ENV);
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
+
+
 const gracefulShutdown = async () => {
   await disconnectPrisma();
   console.log("Shutting down gracefully.....");
