@@ -44,10 +44,11 @@ connectPrisma();
 app.use("/api/auth", authRoute);
 
 // Cron job: Ping server every 5 minutes to prevent sleeping
-console.log(serverUrl)
+const server = serverUrl + "/api/auth/ping"
+console.log(server)
 cron.schedule("*/5 * * * *", async () => {
   try {
-    const response = await axios.get(serverUrl);
+    const response = await axios.get(server);
     console.log(`Server pinged successfully: ${response.status}`);
   } catch (error) {
     console.error("Error pinging server:", error.message);
