@@ -8,6 +8,7 @@ import { serverUrl } from "@/app/register/utils/urls";
 
 export default function TokenPage({ params }) {
   const { token } = use(params);
+  const { email } = localStorage.getItem("user");
   const router = useRouter();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +19,7 @@ export default function TokenPage({ params }) {
       setIsLoading(true);
       const response = await axios.post(
         `${serverUrl}/api/auth/verify`,
-        { token },
+        { token, email },
         {
           headers: {
             "Content-Type": "application/json",

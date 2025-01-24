@@ -1,8 +1,9 @@
 export const setCookie = (res, token, expiresIn) => {
   const cookieOptions = {
-    expires: expiresIn,
+    maxAge: expiresIn,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
   };
   res.cookie("token", token, cookieOptions);
 };

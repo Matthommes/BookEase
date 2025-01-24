@@ -9,30 +9,37 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: `${serverUrl}/api/auth/google/callback`,
+      passReqToCallback: true,
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (req, accessToken, refreshToken, profile, done) => {
       try {
-        // Find or create a new user in the database
         const email = profile.emails[0]?.value;
-        const user = await prisma.user.findUnique({ where: { email } });
+       
+
+        // Find or create user
+        let user = await prisma.user.findUnique({
+          where: {
+            email: email,
+          },
+        });
 
         if (!user) {
-          const newUser = await prisma.user.create({
+          user = await prisma.user.create({
             data: {
               email,
-              isVerified: true,
               token: "",
               tokenExp: null,
+              isVerified: true,
             },
           });
-          return done(null, newUser);
         }
+
         return done(null, user);
       } catch (error) {
+        console.error("Google OAuth Error:", error);
         return done(error, null);
       }
     }
   )
 );
-
 export default passport;

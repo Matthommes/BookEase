@@ -10,7 +10,7 @@ export const sendMail = async (to, html, subject, attachments = []) => {
   });
 
   const mailOptions = {
-    from: `<theformsender@gmail.com>`, // Corrected
+    from: `Clyne <${process.env.MAIL_USERNAME}>`,
     to,
     subject,
     html,
