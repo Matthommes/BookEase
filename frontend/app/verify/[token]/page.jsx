@@ -2,21 +2,21 @@
 
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
-import { handleApiError } from "@/lib/apiError";
+
 import axios from "axios";
 import { serverUrl } from "@/app/register/utils/urls";
 
 export default function TokenPage({ params }) {
   const { token } = use(params);
-  const { email } = localStorage.getItem("user");
   const router = useRouter();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  // const [isVerifying, setIsVerifying] = useState(false);
+  // const [email, setEmail] = useState(null);
 
-  const verifyToken = async () => {
+  const verifyToken = async (email) => {
     try {
       setIsLoading(true);
+      console.log(email);
       const response = await axios.post(
         `${serverUrl}/api/auth/verify`,
         { token, email },
@@ -43,8 +43,14 @@ export default function TokenPage({ params }) {
       router.push("/login");
       return;
     }
-
-    verifyToken();
+    const userEmail = localStorage.getItem("user");
+    if (userEmail) {
+      console.log(userEmail);
+      verifyToken(userEmail);
+    } else {
+      setError("User email not found. Please log in again.");
+      router.push("/login");
+    }
   }, [token, router]);
   return (
     <main className="flex flex-col items-center justify-center h-screen">

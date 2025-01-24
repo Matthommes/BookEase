@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 export default function Hero() {
   return (
     <section className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white py-20 px-6 text-center">
@@ -13,7 +14,7 @@ export default function Hero() {
           apartments, Clyne adapts to your business needs seamlessly.
         </p>
         <button className="bg-white text-indigo-600 font-semibold px-6 py-3 rounded-full shadow-md hover:scale-105 hover:bg-gray-100 transition">
-          Get Started Now
+          <Link href="/register">Get Started Now</Link>
         </button>
       </div>
     </section>

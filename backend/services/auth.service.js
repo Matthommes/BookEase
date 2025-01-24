@@ -70,18 +70,24 @@ export const resendVerificationEmail = async (email) => {
 export const verifyTokenService = async (token, email) => {
   const user = await prisma.user.findUnique({ where: { email } });
 
-  if (!user) throw new Error("Token not found");
-
-  const compareToken = await bcrypt.compare(token, user.token);
-  if (!compareToken) throw new Error("Token does not match");
+  if (!user) throw new Error("User not found");
 
   if (new Date(user.tokenExp) < new Date()) throw new Error("Token expired");
+
+  const compareToken = await bcrypt.compare(token, user.token);
+  if (!compareToken) {
+    console.error("Token comparison failed", {
+      providedToken: token,
+      storedHashedToken: user.token,
+    });
+    throw new Error("Invalid token");
+  }
 
   await prisma.user.update({
     where: { id: user.id },
     data: { token: "", tokenExp: null, isVerified: true },
   });
-  // Generate the JWT token after verification
+
   const tokenPayload = generateToken({
     userId: user.id,
     userEmail: user.email,
