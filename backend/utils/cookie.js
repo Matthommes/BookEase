@@ -3,7 +3,7 @@ export const setCookie = (res, token, expiresIn) => {
     maxAge: expiresIn,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   };
   res.cookie("token", token, cookieOptions);
 };

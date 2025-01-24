@@ -23,7 +23,6 @@ export const userRegistration = async (email) => {
   const user = await prisma.user.create({
     data: { email, token: hashedToken, tokenExp },
   });
-  console.log(user);
   await sendAuthMail(user.email, token, "register");
   return user;
 };

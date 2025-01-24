@@ -16,7 +16,6 @@ export default function TokenPage({ params }) {
   const verifyToken = async (email) => {
     try {
       setIsLoading(true);
-      console.log(email);
       const response = await axios.post(
         `${serverUrl}/api/auth/verify`,
         { token, email },
@@ -45,7 +44,6 @@ export default function TokenPage({ params }) {
     }
     const userEmail = localStorage.getItem("user");
     if (userEmail) {
-      console.log(userEmail);
       verifyToken(userEmail);
     } else {
       setError("User email not found. Please log in again.");
