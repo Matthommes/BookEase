@@ -1,98 +1,89 @@
-import { generateToken } from "../config/jwt.js";
 import { prisma } from "../config/prisma.js";
 import { sendAuthMail } from "../constants/emails/authEmail.js";
 import { generateAuthToken } from "../utils/helpers.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
+import { generateToken } from "../config/jwt.js";
 
-// Register User service!
-
+// REGISTER USER SERVICE
 export const userRegistration = async (email) => {
-  const { token, tokenExp, hashedToken } = await generateAuthToken();
+  const { verificationToken, tokenExp, hashedToken } =
+    await generateAuthToken();
 
   const existingUser = await prisma.user.findUnique({ where: { email } });
 
   if (existingUser) {
     await prisma.user.update({
       where: { email },
-      data: { token: hashedToken, tokenExp },
+      data: { verificationToken: hashedToken, tokenExp },
     });
-    await sendAuthMail(existingUser.email, token, "login");
+    await sendAuthMail(existingUser.email, verificationToken, "login");
     return existingUser;
   }
 
   const user = await prisma.user.create({
-    data: { email, token: hashedToken, tokenExp },
+    data: { email, verificationToken: hashedToken, tokenExp },
   });
-  await sendAuthMail(user.email, token, "register");
+  await sendAuthMail(user.email, verificationToken, "register");
   return user;
 };
 
-// Login User service!
+// LOGIN USER SERVICE
 export const loginService = async (email) => {
-  const { token, tokenExp, hashedToken } = await generateAuthToken();
+  const { verificationToken, tokenExp, hashedToken } =
+    await generateAuthToken();
 
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) throw new Error("User not found!");
   await prisma.user.update({
     where: { email },
     data: {
-      token: hashedToken,
+      verificationToken: hashedToken,
       tokenExp,
     },
   });
 
-  await sendAuthMail(user.email, token, "login");
+  await sendAuthMail(user.email, verificationToken, "login");
 
   return user;
 };
 
-// Resend Email Service!
-
+// RESEND VERIFICATION EMAIL SERVICE
 export const resendVerificationEmail = async (email) => {
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) throw new Error("User not found!");
 
-  const { token, tokenExp, hashedToken } = await generateAuthToken();
+  const { verificationToken, tokenExp, hashedToken } =
+    await generateAuthToken();
 
   await prisma.user.update({
     where: { email },
-    data: { token: hashedToken, tokenExp },
+    data: { verificationToken: hashedToken, tokenExp },
   });
 
-  await sendAuthMail(user.email, token, "login");
+  await sendAuthMail(user.email, verificationToken, "login");
 
   return user;
 };
 
-// Verify Token Service
-
+// VERIFY TOKEN SERVICE
 export const verifyTokenService = async (token, email) => {
   const user = await prisma.user.findUnique({ where: { email } });
-
   if (!user) throw new Error("User not found");
 
+  const isValidToken = await bcrypt.compare(token, user.verificationToken);
+  if (!isValidToken) throw new Error("Invalid token");
+
+  // Check expiration
   if (new Date(user.tokenExp) < new Date()) throw new Error("Token expired");
 
-  const compareToken = await bcrypt.compare(token, user.token);
-  if (!compareToken) {
-    console.error("Token comparison failed", {
-      providedToken: token,
-      storedHashedToken: user.token,
-    });
-    throw new Error("Invalid token");
-  }
+  // Generate a FRESH JWT for session management
+  const sessionToken = generateToken({ userId: user.id, email: user.email });
 
+  // Clear verification token from DB
   await prisma.user.update({
     where: { id: user.id },
-    data: { token: "", tokenExp: null, isVerified: true },
+    data: { verificationToken: null, tokenExp: null, isVerified: true },
   });
 
-  const tokenPayload = generateToken({
-    userId: user.id,
-    userEmail: user.email,
-  });
-
-  return { user, tokenPayload };
+  return { user, sessionToken };
 };
-
-// Logout User Service!

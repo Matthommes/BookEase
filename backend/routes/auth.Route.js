@@ -20,7 +20,7 @@ export const router = Router();
 router.get(
   "/google",
   passport.authenticate("google", {
-    scope: ["profile"],
+    scope: ["profile", 'email'],
     session: false,
   })
 );
@@ -29,7 +29,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
-    successRedirect: "/onboarding/welcome",
+    // successRedirect: `${frontendUrl}/onboarding/welcome`,
     failureRedirect: "/register",
   }),
   (req, res) => {
@@ -38,14 +38,10 @@ router.get(
     if (!user) {
       return res.status(401).json({ message: "Authentication failed" });
     }
-
     const token = generateToken(user);
-    console.log(token);
-    setCookie(res, token, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)); // 30-day expiry
-    res.redirect(`${frontendUrl}/onboarding/welcome`);
+    res.redirect(`${frontendUrl}/onboarding/welcome?token=${token}`);
   }
 );
-
 
 // Apple Authentication (commented out unless required)
 // router.get("/apple", passport.authenticate("apple", { scope: ["email", "name"] }));
@@ -53,16 +49,13 @@ router.get(
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.post("/resend", resendEmail)
+router.post("/resend", resendEmail);
 router.post("/verify", verifyToken);
 router.get("/all", authenticate, getAllUsers);
 router.delete("/delete", deleteAllUsers);
-router.get("/logout", logout)
+router.get("/logout", logout);
 router.get("/ping", (req, res) =>
   res.status(200).send("The server never sleeps")
 );
-
-
-
 
 export default router;

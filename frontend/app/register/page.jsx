@@ -46,7 +46,7 @@ export default function Register() {
 
         <RegisterForm />
 
-        <p className="text-left text-gray-500 font-medium mb-2 text-xs">
+        <p className="text-left text-gray-500 font-medium mb-1 text-xs">
           By signing up, you agree to our{" "}
           <Link
             href="/terms-and-privacy"

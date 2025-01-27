@@ -11,7 +11,6 @@ export default function TokenPage({ params }) {
   const router = useRouter();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  // const [email, setEmail] = useState(null);
 
   const verifyToken = async (email) => {
     try {
@@ -26,9 +25,12 @@ export default function TokenPage({ params }) {
           withCredentials: true,
         }
       );
-      if (response.status === 200 || response.status === 201)
-        router.push("/onboarding/welcome");
+      if (response.status === 200 || response.status === 201) {
+        const res = response.data;
+        console.log(res);
+      }
     } catch (error) {
+      console.log(error)
       const errorMessage = error.response?.data?.message;
       setError(errorMessage || "Unable to verify your token");
     } finally {
@@ -42,7 +44,7 @@ export default function TokenPage({ params }) {
       router.push("/login");
       return;
     }
-    const userEmail = localStorage.getItem("user");
+    const userEmail = localStorage.getItem("userEmail");
     if (userEmail) {
       verifyToken(userEmail);
     } else {

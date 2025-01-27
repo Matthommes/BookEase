@@ -1,97 +1,95 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import { validate } from "../utils/formValidation";
-import {  serverUrl } from "../utils/urls";
+import api from "@/utils/api";
+import { validateEmail } from "../utils/formValidation";
 
 export default function RegisterForm() {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    localStorage.setItem("user", formData.email);
-  }, [formData.email]);
-
+  // Handle input change
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({});
+    setError("");
 
-    // EMail validation
-    const emailError = validate(formData.email);
+    // Validate email
+    const emailError = validateEmail(formData.email);
     if (emailError) {
-      setErrors((prev) => ({
-        ...prev,
-        email: emailError,
-      }));
+      setError(emailError);
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post(
-        `${serverUrl}/api/auth/register`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.status === 200 || response.status === 201)
+      const response = await api.post("/api/auth/register", formData);
+      if (response.status === 200 || response.status === 201) {
+        localStorage.setItem("userEmail", formData.email);
         router.push("/verify");
-    } catch (error) {
-      setErrors((prev) => ({
-        ...prev,
-        server:
-          error.response?.data?.message ||
-          "An error occurred during registration",
-      }));
+      } else {
+        throw new Error("Unexpected response from server");
+      }
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "An error occurred during registration"
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-sm flex flex-col">
-      <div className="grid w-full max-w-sm items-center gap-1.5 mb-4">
-        <Label htmlFor="email">Email</Label>
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-sm flex flex-col bg-white rounded-lg"
+    >
+      <div className="grid w-full items-center gap-2 mb-4">
+        <Label htmlFor="email" className="text-gray-700">
+          Email Address
+        </Label>
         <Input
           type="email"
           id="email"
+          name="email"
           value={formData.email}
           onChange={handleChange}
-          placeholder="Email"
-          className="mt-1 mb- border-purple-600 focus-visible:ring-purple-400"
+          placeholder="Enter your email"
+          className="mt-1 border-purple-600 focus-visible:ring-purple-400"
         />
-        {errors && (
-          <p className="text-red-500 text-xs mb-1">
-            {errors.email || errors.server}
-          </p>
-        )}
-
-        {isSubmitting ? (
-          <Button disabled className="bg-purple-500 hover:cursor-not-allowed">
-            <Loader2 className="animate-spin" />
-          </Button>
-        ) : (
-          <Button className="font-semibold bg-purple-600 hover:bg-purple-700">
-            Send registration link
-          </Button>
-        )}
+        {error && <p className="text-red-500 text-sm">{error}</p>}
       </div>
+
+      <Button
+        disabled={isSubmitting}
+        className={`font-semibold mb-2 ${
+          isSubmitting
+            ? "bg-purple-500 cursor-not-allowed"
+            : "bg-purple-600 hover:bg-purple-700"
+        }`}
+      >
+        {isSubmitting ? (
+          <Loader2 className="animate-spin text-white" />
+        ) : (
+          "Register"
+        )}
+      </Button>
     </form>
   );
 }

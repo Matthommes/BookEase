@@ -4,23 +4,13 @@ import brandLogo from "../../public/brand-logo.png";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { serverUrl } from "@/app/register/utils/urls";
+import api from "@/utils/api";
 
 export const handleResend = async (email) => {
   try {
-    await axios.post(
-      `${serverUrl}/api/auth/resend`,
-      { email },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }
-    );
+    await api.post(`/api/auth/resend`, { email });
   } catch (error) {
-    console.error("Resend error:", error);
+    console.log("Resend error:", error);
     alert("Failed to resend email. Please try again.");
   }
 };
@@ -28,13 +18,20 @@ export const handleResend = async (email) => {
 export default function Verify() {
   const [email, setEmail] = useState(null);
 
+  const [canResend, setCanResend] = useState(false);
+
   useEffect(() => {
     const storedEmail = localStorage.getItem("userEmail");
-    setEmail(storedEmail || "your registered email");
+    setEmail(storedEmail);
+
+    // Set a timer for 5 minutes to enable the resend button
+    const timer = setTimeout(() => {
+      setCanResend(true);
+    }, 1 * 60 * 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   if (email === null) {
-    return <p className="text-center mt-6">Loading...</p>;
   }
 
   return (
@@ -62,16 +59,22 @@ export default function Verify() {
       </div>
 
       <footer className="mt-auto mb-6 text-sm text-center text-gray-500">
-        <p>
-          Didn't receive the email?{" "}
-          <button
-            onClick={() => handleResend(email)}
-            className="text-purple-600 underline"
-          >
-            Resend verification email
-          </button>
-          .
-        </p>
+        {canResend ? (
+          <p>
+            Didn't receive the email?{" "}
+            <button
+              onClick={() => handleResend(email)}
+              className="text-purple-600 underline"
+            >
+              Resend verification email
+            </button>
+            .
+          </p>
+        ) : (
+          <p className="text-gray-400">
+            Resend link will be available in 1 minute.
+          </p>
+        )}
       </footer>
     </main>
   );

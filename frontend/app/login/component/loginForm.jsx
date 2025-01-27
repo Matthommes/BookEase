@@ -1,25 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import { validate } from "@/app/register/utils/formValidation";
-import { serverUrl } from "@/app/register/utils/urls";
+import api from "@/utils/api";
+import { validateEmail } from "@/app/register/utils/formValidation";
 
 export default function LoginForm() {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-
-   useEffect(() => {
-    localStorage.setItem("user", formData.email);
-  }, [formData.email]); 
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -28,7 +22,7 @@ export default function LoginForm() {
     setErrors({});
 
     // Email validation
-    const emailError = validate(formData.email);
+    const emailError = validateEmail(formData.email);
     if (emailError) {
       setErrors((prev) => ({
         ...prev,
@@ -40,18 +34,11 @@ export default function LoginForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post(
-        `${serverUrl}/api/auth/login`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await api.post(`/api/auth/login`, formData);
 
       if (response.status === 200 || response.status === 201)
-        router.push("/verify");
+        localStorage.setItem("userEmail", formData.email);
+      router.push("/verify");
     } catch (error) {
       setErrors((prev) => ({
         ...prev,
