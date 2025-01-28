@@ -16,6 +16,7 @@ model User {
   updatedAt  DateTime  @default(now()) @updatedAt
   tokenExp   DateTime? @default(now())
   isVerified Boolean?  @default(false)
+  onboardingComplete Boolean? @default(false)
   accounts   Account[]
   sessions   Session[]
 }

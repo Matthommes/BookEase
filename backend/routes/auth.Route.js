@@ -12,7 +12,7 @@ import {
 import { authenticate } from "../middlewares/authMiddleware.js";
 import { frontendUrl } from "../utils/urls.js";
 import { generateToken } from "../config/jwt.js";
-import { setCookie } from "../utils/cookie.js";
+
 
 export const router = Router();
 
@@ -39,7 +39,7 @@ router.get(
       return res.status(401).json({ message: "Authentication failed" });
     }
     const token = generateToken(user);
-    res.redirect(`${frontendUrl}/onboarding/welcome?token=${token}`);
+    res.redirect(`${frontendUrl}/verify?token=${token}`);
   }
 );
 

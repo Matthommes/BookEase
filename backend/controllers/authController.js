@@ -77,6 +77,7 @@ export const resendEmail = async (req, res) => {
 
 // VERIFY TOKEN!
 export const verifyToken = async (req, res) => {
+
   const { token, email } = req.body;
   try {
     if (!token || !email) {

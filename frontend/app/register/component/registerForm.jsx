@@ -39,7 +39,7 @@ export default function RegisterForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await api.post("/api/auth/register", formData);
+      const response = await api.post("/auth/register", formData);
       if (response.status === 200 || response.status === 201) {
         localStorage.setItem("userEmail", formData.email);
         router.push("/verify");

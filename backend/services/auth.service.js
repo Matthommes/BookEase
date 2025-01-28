@@ -72,7 +72,6 @@ export const verifyTokenService = async (token, email) => {
 
   const isValidToken = await bcrypt.compare(token, user.verificationToken);
   if (!isValidToken) throw new Error("Invalid token");
-
   // Check expiration
   if (new Date(user.tokenExp) < new Date()) throw new Error("Token expired");
 

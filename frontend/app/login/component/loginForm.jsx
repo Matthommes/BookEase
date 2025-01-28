@@ -34,7 +34,7 @@ export default function LoginForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await api.post(`/api/auth/login`, formData);
+      const response = await api.post(`/auth/login`, formData);
 
       if (response.status === 200 || response.status === 201)
         localStorage.setItem("userEmail", formData.email);
