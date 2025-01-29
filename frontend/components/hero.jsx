@@ -1,4 +1,3 @@
-// components/sections/Hero.tsx
 "use client";
 
 import { Button } from "./ui/button";
@@ -20,17 +19,19 @@ export const Hero = () => {
             reduce no-shows, and delight your clients.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/register"
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-            >
-              <Button size="lg" className="bg-inherit">
+            <Link href="/register">
+              <Button
+                size="lg"
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+              >
                 Start Free Trial
               </Button>
             </Link>
-            <Button size="lg" variant="outline">
-              Watch Demo
-            </Button>
+            <Link href="/demo">
+              <Button size="lg" variant="outline" className="w-full">
+                Watch Demo
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

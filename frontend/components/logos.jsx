@@ -1,11 +1,13 @@
+import Image from "next/image";
+
 export const IntegrationsLogos = () => {
   const integrations = [
-    { name: "Google Calendar", icon: "/api/placeholder/120/40" },
-    { name: "Zoom", icon: "/api/placeholder/120/40" },
-    { name: "Stripe", icon: "/api/placeholder/120/40" },
-    { name: "Outlook", icon: "/api/placeholder/120/40" },
-    { name: "Slack", icon: "/api/placeholder/120/40" },
-    { name: "PayPal", icon: "/api/placeholder/120/40" },
+    { name: "Google Calendar", icon: "/logos/google-calendar.svg" },
+    { name: "Visa", icon: "/logos/visa.svg" },
+    { name: "Zoom", icon: "/logos/zoom.svg" },
+    { name: "Paystack", icon: "/logos/paystack.svg" },
+    { name: "Outlook", icon: "/logos/outlook.svg" },
+    { name: "PayPal", icon: "/logos/paypal.svg" },
   ];
 
   return (
@@ -23,10 +25,13 @@ export const IntegrationsLogos = () => {
               key={i}
               className="p-4 hover:scale-110 transition-transform duration-300 cursor-pointer grayscale hover:grayscale-0"
             >
-              <img
+              <Image
                 src={integration.icon}
                 alt={integration.name}
-                className="w-full h-auto"
+                width={50}
+                height={50}
+                className="w-auto h-auto"
+                // unoptimized
               />
             </div>
           ))}
