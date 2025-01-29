@@ -77,7 +77,6 @@ export const resendEmail = async (req, res) => {
 
 // VERIFY TOKEN!
 export const verifyToken = async (req, res) => {
-
   const { token, email } = req.body;
   try {
     if (!token || !email) {
@@ -134,3 +133,20 @@ cron.schedule("0 * * * *", async () => {
   });
   console.log(`Deleted ${staleAccount.count} stale accounts`);
 });
+
+export const swapToken = async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (!token)
+      res
+        .status(code.BAD_REQUEST)
+        .json({ message: "Request must include a token." });
+    const jwt = await swap(token);
+    res.status(code.OK).json({ jwt });
+  } catch (error) {
+    console.error("Error in swapToken:", error.message);
+    res
+     .status(code.INTERNAL_SERVER_ERROR)
+     .json({ message: "Failed to swap token", error: error.message });
+  }
+};

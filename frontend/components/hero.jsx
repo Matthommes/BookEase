@@ -1,8 +1,8 @@
-
 // components/sections/Hero.tsx
-'use client'
+"use client";
 
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -24,7 +24,7 @@ export const Hero = () => {
               size="lg"
               className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
             >
-              Start Free Trial
+              <Link href="/register"> Start Free Trial</Link>
             </Button>
             <Button size="lg" variant="outline">
               Watch Demo

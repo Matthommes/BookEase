@@ -11,7 +11,7 @@ import {
 } from "../controllers/authController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 import { frontendUrl } from "../utils/urls.js";
-import { generateToken } from "../config/jwt.js";
+
 
 
 export const router = Router();

@@ -86,3 +86,8 @@ export const verifyTokenService = async (token, email) => {
 
   return { user, sessionToken };
 };
+
+
+export const swap = async (oneTimeCode) => {
+    
+}
