@@ -1,22 +1,37 @@
-"use client";
 
-import Link from "next/link";
-export default function Hero() {
+// components/sections/Hero.tsx
+'use client'
+
+import { Button } from "./ui/button";
+
+export const Hero = () => {
   return (
-    <section className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white py-20 px-6 text-center">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl lg:text-6xl font-bold mb-4">
-          Effortless Booking,{" "}
-          <span className="animate-pulse">Customized for You</span>
-        </h1>
-        <p className="text-lg lg:text-2xl font-light mb-8">
-          Whether you're running a salon, managing a clinic, or renting
-          apartments, Clyne adapts to your business needs seamlessly.
-        </p>
-        <button className="bg-white text-indigo-600 font-semibold px-6 py-3 rounded-full shadow-md hover:scale-105 hover:bg-gray-100 transition">
-          <Link href="/register">Get Started Now</Link>
-        </button>
+    <div className="pt-32 pb-16 bg-gradient-to-b from-purple-50 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+            Book Smarter,{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
+              Grow Faster
+            </span>
+          </h1>
+          <p className="text-xl text-gray-600 mb-8">
+            Intelligent scheduling that adapts to your business. Save time,
+            reduce no-shows, and delight your clients.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+            >
+              Start Free Trial
+            </Button>
+            <Button size="lg" variant="outline">
+              Watch Demo
+            </Button>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
   );
-}
+};

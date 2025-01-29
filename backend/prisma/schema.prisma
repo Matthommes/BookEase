@@ -17,31 +17,26 @@ model User {
   tokenExp   DateTime? @default(now())
   isVerified Boolean?  @default(false)
   onboardingComplete Boolean? @default(false)
-  accounts   Account[]
-  sessions   Session[]
+
+  // = 
+  token Token[]
 }
 
-model Account {
-  id                String   @id @default(uuid())
-  userId            String
-  provider          String
-  providerAccountId String
-  access_token      String?
-  refresh_token     String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  createdAt         DateTime @default(now())
-  user              User     @relation(fields: [userId], references: [id])
+model Token {
+  id       String    @id @default(uuid())
+  userId   String
+  token    String
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
 
-  @@unique([provider, providerAccountId])
+  User     User      @relation(fields: [userId], references: [id])
 }
 
-model Session {
-  id           String   @id @default(uuid())
-  userId       String
-  sessionToken String   @unique
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id])
+model OneTimeCode {
+  id         String    @id @default(uuid())
+  code String
+  userId   String
+  createdAt DateTime  @default(now())
+
+  User     User      @relation(fields: [userId], references: [id])
 }
