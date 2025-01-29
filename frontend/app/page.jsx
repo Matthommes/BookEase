@@ -25,9 +25,9 @@ export default function Home() {
       <IntegrationsLogos />
       <InteractiveDemo />
       <InteractiveFeatures />
-      <FAQSection />
       <Testimonials />
       <Pricing />
+      <FAQSection />
       <CTASection />
       <Footer />
     </main>

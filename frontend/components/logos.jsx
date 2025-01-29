@@ -23,7 +23,7 @@ export const IntegrationsLogos = () => {
           {integrations.map((integration, i) => (
             <div
               key={i}
-              className="p-4 hover:scale-110 transition-transform duration-300 cursor-pointer grayscale hover:grayscale-0"
+              className="p-4 hover:scale-110 transition-transform duration-300 cursor-pointer grayscale-0 hover:grayscale lg:grayscale lg:hover:grayscale-0"
             >
               <Image
                 src={integration.icon}

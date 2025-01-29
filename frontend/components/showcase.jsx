@@ -1,17 +1,18 @@
 "use client";
-import React, { useState } from "react";
-import {
-  Wand2,
-  Layout,
-  Palette,
-  Check,
-  Calendar,
-  Clock,
-  User,
-  Mail,
-  Phone,
+import React, { useState, useEffect } from 'react';
+import { 
+  Wand2, 
+  Layout, 
+  Palette, 
+  Check, 
+  Calendar, 
+  Clock, 
+  User, 
+  Mail, 
+  Phone, 
   LockIcon,
-  ArrowRight,
+  PlayCircle,
+  PauseCircle
 } from "lucide-react";
 
 const BrandingPreview = ({ color }) => (
@@ -19,20 +20,15 @@ const BrandingPreview = ({ color }) => (
     <div className="flex items-center justify-between mb-8">
       <div className={`h-8 w-32 bg-${color}-600 rounded-md`} />
       <nav className="flex gap-4">
-        {["Home", "Services", "About", "Contact"].map((item) => (
-          <div key={item} className={`text-sm text-${color}-600 font-medium`}>
-            {item}
-          </div>
+        {['Home', 'Services', 'About', 'Contact'].map(item => (
+          <div key={item} className={`text-sm text-${color}-600 font-medium`}>{item}</div>
         ))}
       </nav>
     </div>
-
+    
     <div className="grid grid-cols-3 gap-4">
       {[...Array(6)].map((_, i) => (
-        <div
-          key={i}
-          className="p-4 border rounded-lg hover:shadow-md transition-shadow"
-        >
+        <div key={i} className="p-4 border rounded-lg hover:shadow-md transition-shadow">
           <div className={`w-full h-24 bg-${color}-100 rounded-md mb-3`} />
           <div className={`h-4 w-3/4 bg-${color}-200 rounded mb-2`} />
           <div className={`h-4 w-1/2 bg-${color}-100 rounded`} />
@@ -49,15 +45,15 @@ const DomainPreview = () => (
         <div className="flex-shrink-0 text-gray-400">
           <LockIcon className="h-4 w-4" />
         </div>
-        <input
-          type="text"
-          value="booking.yourdomain.com"
-          readOnly
+        <input 
+          type="text" 
+          defaultValue="booking.yourdomain.com" 
+          readOnly 
           className="ml-2 bg-transparent border-none focus:outline-none text-sm w-full"
         />
       </div>
     </div>
-
+    
     <div className="space-y-4">
       <div className="flex items-center gap-4 p-4 border rounded-lg">
         <Calendar className="h-5 w-5 text-blue-600" />
@@ -66,7 +62,7 @@ const DomainPreview = () => (
           <div className="h-4 w-1/2 bg-gray-100 rounded" />
         </div>
       </div>
-
+      
       {[...Array(2)].map((_, i) => (
         <div key={i} className="flex items-center gap-4 p-4 border rounded-lg">
           <Clock className="h-5 w-5 text-gray-400" />
@@ -88,38 +84,36 @@ const CustomFieldsPreview = () => (
         <div className="space-y-4">
           <div className="flex items-center gap-3">
             <User className="h-5 w-5 text-green-600" />
-            <input
-              type="text"
-              placeholder="Full Name"
+            <input 
+              type="text" 
+              placeholder="Full Name" 
               className="flex-1 border rounded-md px-3 py-2"
             />
           </div>
           <div className="flex items-center gap-3">
             <Mail className="h-5 w-5 text-green-600" />
-            <input
-              type="email"
-              placeholder="Email Address"
+            <input 
+              type="email" 
+              placeholder="Email Address" 
               className="flex-1 border rounded-md px-3 py-2"
             />
           </div>
           <div className="flex items-center gap-3">
             <Phone className="h-5 w-5 text-green-600" />
-            <input
-              type="tel"
-              placeholder="Phone Number"
+            <input 
+              type="tel" 
+              placeholder="Phone Number" 
               className="flex-1 border rounded-md px-3 py-2"
             />
           </div>
         </div>
       </div>
-
+      
       <div className="border rounded-lg p-4">
         <h4 className="font-medium mb-4">Custom Questions</h4>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm mb-2">
-              What's your preferred communication method?
-            </label>
+            <label className="block text-sm mb-2">What's your preferred communication method?</label>
             <select className="w-full border rounded-md px-3 py-2">
               <option>Email</option>
               <option>Phone</option>
@@ -127,10 +121,8 @@ const CustomFieldsPreview = () => (
             </select>
           </div>
           <div>
-            <label className="block text-sm mb-2">
-              Any specific requirements?
-            </label>
-            <textarea
+            <label className="block text-sm mb-2">Any specific requirements?</label>
+            <textarea 
               className="w-full border rounded-md px-3 py-2 h-20"
               placeholder="Tell us more..."
             />
@@ -141,8 +133,13 @@ const CustomFieldsPreview = () => (
   </div>
 );
 
+
 export const CustomizationShowcase = () => {
   const [activeFeature, setActiveFeature] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [progress, setProgress] = useState(0);
+
+  const ROTATION_INTERVAL = 5000; // 5 seconds per feature
 
   const features = [
     {
@@ -170,6 +167,39 @@ export const CustomizationShowcase = () => {
     },
   ];
 
+  // Auto-rotation effect
+  useEffect(() => {
+    let progressInterval
+    let rotationInterval
+
+    if (isPlaying) {
+      // Progress bar animation
+      progressInterval = setInterval(() => {
+        setProgress((prev) => (prev + 1) % 100);
+      }, ROTATION_INTERVAL / 100);
+
+      // Feature rotation
+      rotationInterval = setInterval(() => {
+        setActiveFeature((prev) => (prev + 1) % features.length);
+        setProgress(0);
+      }, ROTATION_INTERVAL);
+    }
+
+    return () => {
+      clearInterval(progressInterval);
+      clearInterval(rotationInterval);
+    };
+  }, [isPlaying, features.length]);
+
+  // Reset progress when manually changing features
+  useEffect(() => {
+    setProgress(0);
+  }, [activeFeature]);
+
+  const togglePlayPause = () => {
+    setIsPlaying(!isPlaying);
+  };
+
   const ActivePreview = features[activeFeature].preview;
 
   return (
@@ -195,7 +225,10 @@ export const CustomizationShowcase = () => {
                       ? "bg-white shadow-lg scale-105"
                       : "hover:bg-white/50"
                   }`}
-                onClick={() => setActiveFeature(index)}
+                onClick={() => {
+                  setActiveFeature(index);
+                  setIsPlaying(false);
+                }}
               >
                 <div
                   className={`p-3 rounded-lg bg-${feature.color}-100 transition-colors duration-300`}
@@ -215,10 +248,30 @@ export const CustomizationShowcase = () => {
                 </div>
               </div>
             ))}
+
+            {/* Progress and Controls */}
+            <div className="flex items-center gap-4 pt-4">
+              <button
+                onClick={togglePlayPause}
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              >
+                {isPlaying ? (
+                  <PauseCircle className="h-6 w-6 text-gray-600" />
+                ) : (
+                  <PlayCircle className="h-6 w-6 text-gray-600" />
+                )}
+              </button>
+              <div className="flex-1 bg-gray-200 h-2 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-purple-600 to-blue-600 transition-all duration-200"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
           </div>
 
           <div className="relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 hover:scale-105">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500">
               <ActivePreview color={features[activeFeature].color} />
 
               {/* Floating UI Elements */}
