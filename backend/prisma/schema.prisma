@@ -11,22 +11,21 @@ model User {
   id         String    @id @default(uuid())
   email      String    @unique
   name        String?
-  verificationToken      String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now()) @updatedAt
   tokenExp   DateTime? @default(now())
   isVerified Boolean?  @default(false)
   onboardingComplete Boolean? @default(false)
 
-  // = 
+  // relations
   token Token[]
   oneTimeCode OneTimeCode[]
 }
 
 model Token {
   id       String    @id @default(uuid())
+  verificationToken      String?
   userId   String
-  token    String
   expiresAt DateTime
   createdAt DateTime  @default(now())
 
@@ -38,6 +37,6 @@ model OneTimeCode {
   code String
   userId   String
   createdAt DateTime  @default(now())
-
+  expiresAt DateTime
   User     User      @relation(fields: [userId], references: [id])
 }

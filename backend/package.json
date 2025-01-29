@@ -23,7 +23,7 @@
   "description": "A customizable booking platform",
   "devDependencies": {
     "@prisma/client": "^6.2.1",
-    "prisma": "^6.2.1"
+    "prisma": "^6.3.0"
   },
   "keywords": [],
   "license": "ISC",

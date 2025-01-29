@@ -5,14 +5,19 @@
 :root {
   --line-height: 1.6;
   --letter-spacing: 0.02em;
-  /* --foreground: #171717; */
+  --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* --background: #0a0a0a; */
+    --background: #0a0a0a;
   }
 }
+
+html, body {
+  overflow-x: hidden;
+}
+
 
 button {
   font-family: inherit;
@@ -26,62 +31,18 @@ button:hover {
 }
 
 body {
-  /* color: var(--foreground); */
+  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   line-height: var(--line-height);
   letter-spacing: var(--letter-spacing);
   margin: 0;
-  padding: var(--universal-padding);
-  padding-top: var(--universal-top-padding);
+  padding: 0;
   box-sizing: border-box;
-  /* width: 100vw; */
+  width: 100%;
   /* height: 100vh; */
 }
 
-@media (min-width: 330px) {
-  /* Small screens (sm) */
-  :root {
-    --universal-padding: ;
-    --universal-top-padding: 1rem;
-  }
-}
-@media (min-width: 640px) {
-  /* Small screens (sm) */
-  :root {
-    --universal-padding: 1rem;
-  }
-}
-
-@media (min-width: 768px) {
-  /* Medium screens (md) */
-  :root {
-    --universal-padding: 2rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  /* Large screens (lg) */
-  :root {
-    --universal-padding: 3rem;
-    --universal-top-padding: 1rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  /* Extra Large screens (xl) */
-  :root {
-    --universal-padding: 4rem;
-    --universal-top-padding: 2rem;
-  }
-}
-
-@media (min-width: 1536px) {
-  /* 2XL screens (2xl) */
-  :root {
-    --universal-padding: 5rem;
-    --universal-top-padding: 2rem;
-  }
-}
+/*  */
 
 @layer base {
   :root {

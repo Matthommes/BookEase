@@ -20,12 +20,14 @@ export const Hero = () => {
             reduce no-shows, and delight your clients.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
+            <Link
+              href="/register"
               className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
             >
-              <Link href="/register"> Start Free Trial</Link>
-            </Button>
+              <Button size="lg" className="bg-inherit">
+                Start Free Trial
+              </Button>
+            </Link>
             <Button size="lg" variant="outline">
               Watch Demo
             </Button>

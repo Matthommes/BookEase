@@ -23,6 +23,7 @@ export default function Home() {
       <Features />
       <CustomizationShowcase />
       <IntegrationsLogos />
+      <InteractiveDemo />
       <InteractiveFeatures />
       <FAQSection />
       <Testimonials />

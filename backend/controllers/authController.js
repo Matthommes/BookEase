@@ -146,7 +146,7 @@ export const swapToken = async (req, res) => {
   } catch (error) {
     console.error("Error in swapToken:", error.message);
     res
-     .status(code.INTERNAL_SERVER_ERROR)
-     .json({ message: "Failed to swap token", error: error.message });
+      .status(code.INTERNAL_SERVER_ERROR)
+      .json({ message: "Failed to swap token", error: error.message });
   }
 };
