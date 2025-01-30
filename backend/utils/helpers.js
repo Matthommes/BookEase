@@ -9,6 +9,12 @@ export const generateAuthToken = async () => {
   return { verificationToken, tokenExp, hashedToken };
 };
 
+export const generateOTP = async () => {
+  const otp = `OAUTH_${crypto.randomBytes(20).toString("hex")}`
+  const codeExp = addMinutes(new Date(), 5);
+  return { otp, codeExp };
+}
+
 export const generateOneTimeCode = async () => {
   const oneTimeCode = `OAUTH_${crypto.randomBytes(40).toString("hex")}`;
   const codeExp = addMinutes(new Date(), 1);

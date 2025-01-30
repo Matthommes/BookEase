@@ -15,11 +15,13 @@ passport.use(
     async (req, accessToken, refreshToken, profile, done) => {
       try {
         const email = profile.emails[0]?.value;
+        // const name = profile.names[0]?.value;
+        // console.log(name);
         let user = await prisma.user.findUnique({ where: { email } });
 
         if (!user) {
           user = await prisma.user.create({
-            data: { email, isVerified: true, verificationToken: null },
+            data: { email, isVerified: true },
           });
         }
         return done(null, user);

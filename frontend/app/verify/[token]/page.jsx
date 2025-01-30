@@ -6,6 +6,7 @@ import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useToast } from "@/hooks/use-toast";
+import { jwtDecode } from "jwt-decode";
 
 export default function TokenPage({ params }) {
   const { token } = use(params);
@@ -13,50 +14,88 @@ export default function TokenPage({ params }) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
 
-  const verifyToken = async (email) => {
+  const handleError = (error) => {
+    console.log("Token verification failed:", error);
+    toast({
+      variant: "destructive",
+      title: "Verification Failed",
+      description:
+        error.response?.data?.message || "Please try logging in again",
+    });
+    router.push("/login");
+  };
+
+  const process = async (response) => {
+    try {
+      const { jwt } = await response.data;
+
+      const decoded = jwtDecode(jwt);
+      const redirectPath = decoded.onboardingComplete
+        ? "/dashboard"
+        : "onboarding";
+
+      Cookies.set("token", jwt);
+      router.push(redirectPath);
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  const verifyOauthToken = async () => {
+    try {
+      const response = await api.post("/auth/swap", { token });
+      await process(response);
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  const verifyEmailToken = async (email) => {
     try {
       const response = await api.post("/auth/verify", { token, email });
-      const data = await response.data;
-
-      Cookies.set("token", data.token);
-      router.push("/onboarding");
+      await process(response);
     } catch (error) {
-      console.log("Token verification failed:", error);
-      toast({
-        variant: "destructive",
-        title: "Verification Failed",
-        description:
-          error.response?.data?.message || "Please try logging in again",
-      });
-      router.push("/login");
+      handleError(error);
     }
+  };
+
+  const showTokenError = (title, description) => {
+    toast({
+      variant: "destructive",
+      title,
+      description,
+    });
+    router.push("/login");
   };
 
   useEffect(() => {
     const handleVerification = async () => {
       if (!token) {
-        toast({
-          variant: "destructive",
-          title: "Invalid Token",
-          description:
-            "No verification token found. Please try logging in again.",
-        });
-        router.push("/login");
+        showTokenError(
+          "Invalid Token",
+          "No verification token found. Please try logging in again."
+        );
         return;
       }
 
-      const userEmail = localStorage.getItem("userEmail");
-      if (!userEmail) {
-        toast({
-          variant: "destructive",
-          title: "Missing Information",
-          description: "Email not found. Please try logging in again.",
-        });
-        router.push("/login");
-        return;
+      if (token.startsWith("EMAIL_")) {
+        const userEmail = localStorage.getItem("userEmail");
+        if (!userEmail) {
+          showTokenError(
+            "Missing Information",
+            "Email not found. Please try logging in again."
+          );
+          return;
+        }
+        await verifyEmailToken(userEmail);
+      } else if (token.startsWith("OAUTH_")) {
+        await verifyOauthToken();
+      } else {
+        showTokenError(
+          "Invalid Token Format",
+          "Invalid token format. Please try logging in again."
+        );
       }
-
-      await verifyToken(userEmail);
     };
 
     handleVerification().finally(() => {

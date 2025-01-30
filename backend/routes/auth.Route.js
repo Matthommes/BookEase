@@ -3,14 +3,15 @@ import { Router } from "express";
 import {
   deleteAllUsers,
   getAllUsers,
+  handleGoogleCallback,
   loginUser,
   logout,
   registerUser,
   resendEmail,
+  swapToken,
   verifyToken,
 } from "../controllers/authController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
-import { frontendUrl } from "../utils/urls.js";
 
 
 
@@ -32,15 +33,7 @@ router.get(
     // successRedirect: `${frontendUrl}/onboarding/welcome`,
     failureRedirect: "/register",
   }),
-  (req, res) => {
-    const { user } = req;
-
-    if (!user) {
-      return res.status(401).json({ message: "Authentication failed" });
-    }
-    const token = generateToken(user);
-    res.redirect(`${frontendUrl}/verify?token=${token}`);
-  }
+  handleGoogleCallback
 );
 
 // Apple Authentication (commented out unless required)
@@ -51,6 +44,7 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/resend", resendEmail);
 router.post("/verify", verifyToken);
+router.post("/swap", swapToken);
 router.get("/all", authenticate, getAllUsers);
 router.delete("/delete", deleteAllUsers);
 router.get("/logout", logout);

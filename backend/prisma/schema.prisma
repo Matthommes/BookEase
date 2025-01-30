@@ -26,7 +26,7 @@ model Token {
   id       String    @id @default(uuid())
   verificationToken      String?
   userId   String @unique
-  expiresAt DateTime
+  expiresAt DateTime?
   createdAt DateTime  @default(now())
 
   User     User      @relation(fields: [userId], references: [id])

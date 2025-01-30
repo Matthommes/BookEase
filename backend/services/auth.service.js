@@ -1,6 +1,6 @@
 import { prisma } from "../config/prisma.js";
 import { sendAuthMail } from "../constants/emails/authEmail.js";
-import { generateAuthToken } from "../utils/helpers.js";
+import { generateAuthToken, generateOTP } from "../utils/helpers.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../config/jwt.js";
 
@@ -93,17 +93,18 @@ export const verifyTokenService = async (token, email) => {
     where: { userId: user.id },
   });
   if (!emailToken) throw new Error("Email token not found");
+
+  // Check expiration
+  if (new Date(emailToken.expiresAt) < new Date())
+    throw new Error("Token expired");
   const isValidToken = await bcrypt.compare(
     token,
     emailToken.verificationToken
   );
   if (!isValidToken) throw new Error("Invalid token");
-  // Check expiration
-  if (new Date(emailToken.expiresAt) < new Date())
-    throw new Error("Token expired");
 
   // Generate a FRESH JWT for session management
-  const sessionToken = generateToken({ userId: user.id, email: user.email });
+  const sessionToken = generateToken(user);
 
   // Clear verification token from DB
   await prisma.user.update({
@@ -117,4 +118,33 @@ export const verifyTokenService = async (token, email) => {
   return { user, sessionToken };
 };
 
-export const swap = async (oneTimeCode) => {};
+// Google Callback
+
+export const googleCallbacks = async (user) => {
+  const { otp, codeExp } = await generateOTP();
+  await prisma.token.upsert({
+    where: { userId: user.id },
+    update: { verificationToken: otp, expiresAt: codeExp },
+    create: { userId: user.id, verificationToken: otp, expiresAt: codeExp },
+  });
+  return otp;
+};
+
+export const swap = async (oneTimeCode) => {
+  const otp = await prisma.token.findFirst({
+    where: { verificationToken: oneTimeCode },
+  });
+  if (!otp) throw new Error("No token found");
+  if (new Date(otp.expiresAt) < new Date()) throw new Error("Token expired");
+  const user = await prisma.user.findUnique({
+    where: { id: otp.userId },
+  });
+
+  const jwt = generateToken(user);
+
+  if (!user) throw new Error("User not found");
+  await prisma.token.delete({
+    where: { id: otp.id },
+  });
+  return jwt;
+};

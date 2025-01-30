@@ -1,13 +1,36 @@
 import { HttpStatusCodes as code } from "../constants/httpStatusCodes.js";
 import {
+  googleCallbacks,
   loginService,
   resendVerificationEmail,
+  swap,
   userRegistration,
   verifyTokenService,
 } from "../services/auth.service.js";
 import { prisma } from "../config/prisma.js";
 import { subHours } from "date-fns";
 import cron from "node-cron";
+import { frontendUrl } from "../utils/urls.js";
+
+// GOOGLE OAUTH
+
+export const handleGoogleCallback = async (req, res) => {
+  try {
+    const { user } = req;
+
+    if (!user) {
+      return res.status(401).json({ message: "Authentication failed" });
+    }
+    const otp = await googleCallbacks(user);
+    res.redirect(`${frontendUrl}/verify/${otp}`);
+  } catch (error) {
+    console.error("Google callback err", error);
+    return res.status(code.INTERNAL_SERVER_ERROR).json({
+      error: "Failed to authenticate with Google",
+      message: error.message,
+    });
+  }
+};
 
 // REGISTER NEW USER!
 export const registerUser = async (req, res) => {
@@ -86,9 +109,7 @@ export const verifyToken = async (req, res) => {
     }
 
     const { user, sessionToken } = await verifyTokenService(token, email);
-    res
-      .status(code.OK)
-      .json({ message: "Token verified", token: sessionToken });
+    res.status(code.OK).json({ jwt: sessionToken });
   } catch (error) {
     console.error("Error in verifyToken:", error.message);
     return res.status(code.INTERNAL_SERVER_ERROR).json({
@@ -133,12 +154,12 @@ cron.schedule("0 * * * *", async () => {
   });
   console.log(`Deleted ${staleAccount.count} stale accounts`);
 });
-
+// SWAP ONE TIME TOKEN FOR JWT
 export const swapToken = async (req, res) => {
   try {
     const { token } = req.body;
     if (!token)
-      res
+      return res
         .status(code.BAD_REQUEST)
         .json({ message: "Request must include a token." });
     const jwt = await swap(token);
