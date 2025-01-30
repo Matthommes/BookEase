@@ -92,7 +92,7 @@ export const verifyTokenService = async (token, email) => {
   const emailToken = await prisma.token.findFirst({
     where: { userId: user.id },
   });
-  if(!emailToken) throw new Error("Email token not found");
+  if (!emailToken) throw new Error("Email token not found");
   const isValidToken = await bcrypt.compare(
     token,
     emailToken.verificationToken
