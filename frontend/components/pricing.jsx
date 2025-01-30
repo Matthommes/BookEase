@@ -1,5 +1,6 @@
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 export const Pricing = () => {
   const plans = [
@@ -63,16 +64,18 @@ export const Pricing = () => {
                   </li>
                 ))}
               </ul>
-              <Button
-                className={
-                  plan.popular
-                    ? "w-full bg-purple-600 hover:bg-purple-700"
-                    : "w-full"
-                }
-                variant={plan.popular ? "default" : "outline"}
-              >
-                Get Started
-              </Button>
+              <Link href="/register">
+                <Button
+                  className={
+                    plan.popular
+                      ? "w-full bg-purple-600 hover:bg-purple-700"
+                      : "w-full"
+                  }
+                  variant={plan.popular ? "default" : "outline"}
+                >
+                  Get Started
+                </Button>
+              </Link>
             </div>
           ))}
         </div>

@@ -111,7 +111,7 @@ export const verifyTokenService = async (token, email) => {
     data: { isVerified: true },
   });
   await prisma.token.delete({
-    where: { userId: user.id },
+    where: { id: emailToken.id },
   });
 
   return { user, sessionToken };

@@ -1,12 +1,13 @@
 import { Star } from "lucide-react";
 import { Card } from "./ui/card";
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export const Testimonials = () => {
   const testimonials = [
     {
       name: "Blessing Onas",
       role: "Lash Studio Owner",
-      image: "/api/placeholder/64/64",
+      image: "/",
+      fallback: "BO",
       content:
         "Clyne transformed my business. I've reduced no-shows by 80% and saved countless hours on scheduling.",
       rating: 5,
@@ -14,7 +15,8 @@ export const Testimonials = () => {
     {
       name: "Matthew Akahomen",
       role: "Online Car shop",
-      image: "/api/placeholder/64/64",
+      image: "/",
+      fallback: "MA",
       content:
         "The automated reminders and easy rescheduling have made my life so much easier. My clients love it too!",
       rating: 5,
@@ -22,7 +24,8 @@ export const Testimonials = () => {
     {
       name: "Emily Watson",
       role: "Life Coach",
-      image: "/api/placeholder/64/64",
+      image: "/",
+      fallback: "EW",
       content:
         "Finally, a booking system that understands my needs. The AI suggestions for scheduling are spot-on.",
       rating: 5,
@@ -48,11 +51,10 @@ export const Testimonials = () => {
               className="p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
             >
               <div className="flex items-center mb-4">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-12 h-12 rounded-full"
-                />
+                <Avatar>
+                  <AvatarImage src={testimonial.image} />
+                  <AvatarFallback>{testimonial.fallback}</AvatarFallback>
+                </Avatar>
                 <div className="ml-4">
                   <h4 className="font-semibold">{testimonial.name}</h4>
                   <p className="text-sm text-gray-600">{testimonial.role}</p>
