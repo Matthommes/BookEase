@@ -15,8 +15,3 @@ export const generateOTP = async () => {
   return { otp, codeExp };
 }
 
-export const generateOneTimeCode = async () => {
-  const oneTimeCode = `OAUTH_${crypto.randomBytes(40).toString("hex")}`;
-  const codeExp = addMinutes(new Date(), 1);
-  return { oneTimeCode, codeExp };
-};
