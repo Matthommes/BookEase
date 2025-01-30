@@ -8,35 +8,35 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(uuid())
-  email      String    @unique
-  name        String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now()) @updatedAt
-  tokenExp   DateTime? @default(now())
-  isVerified Boolean?  @default(false)
-  onboardingComplete Boolean? @default(false)
+  id                 String    @id @default(uuid())
+  email              String    @unique
+  name               String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now()) @updatedAt
+  tokenExp           DateTime? @default(now())
+  isVerified         Boolean?  @default(false)
+  onboardingComplete Boolean?  @default(false)
 
   // relations
-  token Token[]
+  token       Token[]
   oneTimeCode OneTimeCode[]
 }
 
 model Token {
-  id       String    @id @default(uuid())
-  verificationToken      String?
-  userId   String @unique
-  expiresAt DateTime?
-  createdAt DateTime  @default(now())
+  id                String    @id @default(uuid())
+  verificationToken String?
+  userId            String    @unique
+  expiresAt         DateTime?
+  createdAt         DateTime  @default(now())
 
-  User     User      @relation(fields: [userId], references: [id])
+  User User @relation(fields: [userId], references: [id])
 }
 
 model OneTimeCode {
-  id         String    @id @default(uuid())
-  code String
-  userId   String
-  createdAt DateTime  @default(now())
+  id        String   @id @default(uuid())
+  code      String
+  userId    String
+  createdAt DateTime @default(now())
   expiresAt DateTime
-  User     User      @relation(fields: [userId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
 }

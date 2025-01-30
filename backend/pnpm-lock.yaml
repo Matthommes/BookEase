@@ -64,8 +64,8 @@ importers:
         version: 3.17.0
     devDependencies:
       '@prisma/client':
-        specifier: ^6.2.1
-        version: 6.2.1(prisma@6.3.0)
+        specifier: ^6.3.0
+        version: 6.3.0(prisma@6.3.0)
       prisma:
         specifier: ^6.3.0
         version: 6.3.0
@@ -83,13 +83,16 @@ packages:
     resolution: {integrity: sha512-Yhlar6v9WQgUp/He7BdgzOz8lqMQ8sU+jkCq7Wx8Myc5YFJLbEe7lgui/V7G1qB1DJykHSGwreceSaD60Y0PUQ==}
     hasBin: true
 
-  '@prisma/client@6.2.1':
-    resolution: {integrity: sha512-msKY2iRLISN8t5X0Tj7hU0UWet1u0KuxSPHWuf3IRkB4J95mCvGpyQBfQ6ufcmvKNOMQSq90O2iUmJEN2e5fiA==}
+  '@prisma/client@6.3.0':
+    resolution: {integrity: sha512-BY3Fi28PUSk447Bpv22LhZp4HgNPo7NsEN+EteM1CLDnLjig5863jpW+3c3HHLFmml+nB/eJv1CjSriFZ8z7Cg==}
     engines: {node: '>=18.18'}
     peerDependencies:
       prisma: '*'
+      typescript: '>=5.1.0'
     peerDependenciesMeta:
       prisma:
+        optional: true
+      typescript:
         optional: true
 
   '@prisma/debug@6.3.0':
@@ -833,7 +836,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@prisma/client@6.2.1(prisma@6.3.0)':
+  '@prisma/client@6.3.0(prisma@6.3.0)':
     optionalDependencies:
       prisma: 6.3.0
 
