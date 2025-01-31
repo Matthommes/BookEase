@@ -85,11 +85,17 @@ export default function TokenPage({ params }) {
   useEffect(() => {
     const handleVerification = async () => {
       try {
-        // console.log("Starting verification. Token:", {
-        //   exists: !!token,
-        //   length: token?.length,
-        //   prefix: token?.substring(0, 6),
-        // });
+        const isInAppBrowser = () => {
+          const ua = navigator.userAgent || navigator.vendor || window.opera;
+          return /FBAN|FBAV|Instagram|GSA|Gmail/i.test(ua);
+        };
+
+        if (isInAppBrowser()) {
+          window.location.href = `googlechrome://${window.location.href.replace(
+            /^https?:\/\//,
+            ""
+          )}`;
+        }
 
         if (!token) {
           showTokenError(

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,12 +8,26 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import api from "@/utils/api";
 import { validateEmail } from "@/app/register/utils/formValidation";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 
 export default function LoginForm() {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      const decoded = jwtDecode(token);
+      const redirectPath = decoded.onboardingComplete
+        ? "/dashboard"
+        : "/onboarding";
+      router.push(redirectPath);
+    }
+  }, [router]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };

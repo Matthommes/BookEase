@@ -114,7 +114,7 @@ export const sendAuthMail = async (email, token, type) => {
                 : "Here's your secure login link. It will expire in 15 minutes."
             }
           </p>
-          <a href="${authLink}" class="cta-button">
+          <a href="${authLink}" class="cta-button" target="_blank" rel="noopener noreferrer">
             ${type === "register" ? "Verify Account" : "Login to Clyne"}
           </a>
           <div class="alt-link">

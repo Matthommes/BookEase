@@ -9,6 +9,9 @@ import Loading from "@/components/loading";
 import { useToast } from "@/hooks/use-toast";
 import { Timer, Mail, CheckCircle2 } from "lucide-react";
 import { ToastAction } from "@/components/ui/toast";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+import { useRouter } from "next/navigation";
 
 export default function Verify() {
   const [email, setEmail] = useState(null);
@@ -16,6 +19,8 @@ export default function Verify() {
   const { toast } = useToast();
   const [canResend, setCanResend] = useState(false);
   const [countdown, setCountdown] = useState(60);
+  const [token, setToken] = useState(Cookies.get("token")); // Track token changes
+  const router = useRouter();
 
   const handleResend = async (email) => {
     try {
@@ -40,9 +45,18 @@ export default function Verify() {
     }
   };
 
+  // Initial setup: Check for stored email and existing token
   useEffect(() => {
     const storedEmail = localStorage.getItem("userEmail");
     setEmail(storedEmail);
+
+    if (token) {
+      const decoded = jwtDecode(token);
+      const redirectPath = decoded.onboardingComplete
+        ? "/dashboard"
+        : "/onboarding";
+      router.push(redirectPath);
+    }
 
     const timer = setTimeout(() => {
       setCanResend(true);
@@ -51,8 +65,21 @@ export default function Verify() {
     setIsLoading(false);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [token]) // Watch for token changes
 
+  // Polling: Check if token gets updated
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newToken = Cookies.get("token");
+      if (newToken && newToken !== token) {
+        setToken(newToken); // Update state, which triggers a re-render
+      }
+    }, 2000); // Check every 2 seconds
+
+    return () => clearInterval(interval);
+  }, [token]);
+
+  // Countdown Timer for Resend Button
   useEffect(() => {
     let interval;
     if (!canResend) {
@@ -108,6 +135,7 @@ export default function Verify() {
             {canResend ? (
               <button
                 onClick={() => handleResend(email)}
+                disabled={!email}
                 className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
               >
                 Resend verification email
