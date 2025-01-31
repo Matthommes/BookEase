@@ -31,51 +31,43 @@ export default function TokenPage({ params }) {
 
   const process = async (response) => {
     try {
-      console.log("Processing response:", response);
-
+      
       if (!response?.data?.jwt) {
         throw new Error("No JWT found in response");
       }
 
       const { jwt } = response.data;
-      console.log("JWT received:", jwt.substring(0, 20) + "...");
+     
 
       const decoded = jwtDecode(jwt);
-      console.log("Decoded JWT:", decoded);
-
       const redirectPath = decoded.onboardingComplete
         ? "/dashboard"
         : "/onboarding";
-
-      console.log("Redirecting to:", redirectPath);
-
+      
       Cookies.set("token", jwt);
       router.push(redirectPath);
     } catch (error) {
-      console.error("Error in process function:", error);
+      console.log("Error in process function:", error);
       handleError(error);
     }
   };
 
   const verifyOauthToken = async () => {
     try {
-      console.log("Verifying OAuth token:", token.substring(0, 20) + "...");
       const response = await api.post("/auth/swap", { token });
       await process(response);
     } catch (error) {
-      console.error("OAuth verification error:", error);
+      console.log("OAuth verification error:", error);
       handleError(error);
     }
   };
 
   const verifyEmailToken = async (email) => {
     try {
-      console.log("Verifying email token for:", email);
-      console.log("Token:", token.substring(0, 20) + "...");
       const response = await api.post("/auth/verify", { token, email });
       await process(response);
     } catch (error) {
-      console.error("Email verification error:", error);
+      console.log("Email verification error:", error);
       handleError(error);
     }
   };
@@ -93,11 +85,11 @@ export default function TokenPage({ params }) {
   useEffect(() => {
     const handleVerification = async () => {
       try {
-        console.log("Starting verification. Token:", {
-          exists: !!token,
-          length: token?.length,
-          prefix: token?.substring(0, 6),
-        });
+        // console.log("Starting verification. Token:", {
+        //   exists: !!token,
+        //   length: token?.length,
+        //   prefix: token?.substring(0, 6),
+        // });
 
         if (!token) {
           showTokenError(
@@ -113,7 +105,6 @@ export default function TokenPage({ params }) {
 
         if (cleanToken.startsWith("EMAIL_")) {
           const userEmail = localStorage.getItem("userEmail");
-          console.log("Found email in localStorage:", userEmail);
 
           if (!userEmail) {
             showTokenError(

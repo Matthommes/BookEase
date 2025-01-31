@@ -1,375 +1,280 @@
-"use client"
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Calendar,
-  Clock,
-  Palette,
-  Globe,
-  Users,
-  MessageSquare,
-  Building2,
-  CreditCard,
-  CheckCircle,
-  ArrowRight,
-  ArrowLeft,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+"use client";
 
-const OnboardingPage = () => {
-  const router = useRouter();
-  const { toast } = useToast();
-  const [step, setStep] = useState(1);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Progress } from "@/components/ui/progress";
+import { CheckCircle, ArrowRight, ArrowLeft } from "lucide-react";
+
+const BUSINESS_TYPES = [
+  "Health & Wellness",
+  "Professional Services",
+  "Beauty & Personal Care",
+  "Education & Training",
+  "Fitness & Sports",
+  "Events & Entertainment",
+  "Home Services",
+  "Other",
+];
+
+export default function OnboardingFlow() {
+  const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
-    // Business Profile
+    // Business Details
     businessName: "",
     businessType: "",
-    website: "",
-    customDomain: "",
-
-    // Schedule Settings
-    workingHours: {
-      start: "09:00",
-      end: "17:00",
-    },
-    breakTime: "60",
-    bufferTime: "15",
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    availability: {
-      monday: true,
-      tuesday: true,
-      wednesday: true,
-      thursday: true,
-      friday: true,
-      saturday: false,
-      sunday: false,
-    },
-
-    // Service Setup
-    services: [
-      {
-        name: "",
-        duration: "60",
-        price: "",
-        description: "",
-        color: "#7C3AED",
-      },
-    ],
-
-    // Customization
-    brandColor: "#7C3AED",
+    description: "",
+    services: [],
+    address: "",
+    businessHours: "",
+    // Owner Details
+    ownerName: "",
+    ownerTitle: "",
+    ownerBio: "",
+    phoneNumber: "",
+    // Brand Details
+    primaryColor: "#6D28D9", // Default purple
     logo: null,
-
-    // Client Management
-    intakeFields: {
-      name: true,
-      email: true,
-      phone: true,
-      customFields: [],
+    socialLinks: {
+      facebook: "",
+      instagram: "",
+      twitter: "",
     },
-
-    // Notifications
-    reminderTiming: ["24h", "1h"],
-    notificationChannels: {
-      email: true,
-      sms: false,
-    },
-    reminderTemplates: {
-      email: "",
-      sms: "",
-    },
-
-    // Payment Settings
-    acceptPayments: false,
-    depositRequired: false,
-    depositAmount: "0",
-    currency: "USD",
-    stripeConnected: false,
-    cancelPolicy: "flexible", // flexible, moderate, strict
-    refundPolicy: "100",
-
-    // Final Setup
-    termsAccepted: false,
-    marketingEmails: false,
   });
 
-  const updateFormData = (field, value) => {
+  const steps = [
+    {
+      title: "Welcome",
+      description: "Let's create your professional booking website",
+    },
+    {
+      title: "Business Details",
+      description: "Tell us about your business",
+    },
+    {
+      title: "Owner Information",
+      description: "Add your personal touch",
+    },
+    {
+      title: "Brand & Customization",
+      description: "Make it uniquely yours",
+    },
+    {
+      title: "Preview",
+      description: "See your website",
+    },
+  ];
+
+  const handleNext = () => {
+    setStep((prev) => Math.min(prev + 1, steps.length - 1));
+  };
+
+  const handleBack = () => {
+    setStep((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [field]: value,
+      [name]: value,
     }));
   };
 
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+  const WelcomeStep = () => (
+    <div className="text-center space-y-6">
+      <CheckCircle className="w-16 h-16 text-purple-600 mx-auto" />
+      <h2 className="text-2xl font-bold">Welcome to BookSmartly!</h2>
+      <p className="text-gray-600 max-w-md mx-auto">
+        Let's get your booking website set up. We'll collect some information
+        about your business to create a professional and personalized booking
+        experience for your clients.
+      </p>
+      <Button
+        onClick={handleNext}
+        className="bg-purple-600 hover:bg-purple-700"
+      >
+        Get Started <ArrowRight className="ml-2 w-4 h-4" />
+      </Button>
+    </div>
+  );
 
-      toast({
-        title: "Setup Complete!",
-        description: "Your booking platform is ready to use.",
-        duration: 5000,
-      });
+  const BusinessDetailsStep = () => (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <Label htmlFor="businessName">Business Name</Label>
+        <Input
+          id="businessName"
+          name="businessName"
+          value={formData.businessName}
+          onChange={handleInputChange}
+          placeholder="Enter your business name"
+          className="border-purple-600 focus-visible:ring-purple-400"
+        />
+      </div>
 
-      router.push("/dashboard");
-    } catch (error) {
-      toast({
-        title: "Setup Failed",
-        description: "Please try again or contact support.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
+      <div className="space-y-2">
+        <Label htmlFor="businessType">Business Type</Label>
+        <Select
+          onValueChange={(value) =>
+            handleInputChange({ target: { name: "businessType", value } })
+          }
+          value={formData.businessType}
+        >
+          <SelectTrigger className="border-purple-600 focus:ring-purple-400">
+            <SelectValue placeholder="Select your business type" />
+          </SelectTrigger>
+          <SelectContent>
+            {BUSINESS_TYPES.map((type) => (
+              <SelectItem key={type} value={type}>
+                {type}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="description">Business Description</Label>
+        <Textarea
+          id="description"
+          name="description"
+          value={formData.description}
+          onChange={handleInputChange}
+          placeholder="Tell us about your business"
+          className="border-purple-600 focus-visible:ring-purple-400"
+          rows={4}
+        />
+      </div>
+    </div>
+  );
+
+  const OwnerDetailsStep = () => (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <Label htmlFor="ownerName">Your Name</Label>
+        <Input
+          id="ownerName"
+          name="ownerName"
+          value={formData.ownerName}
+          onChange={handleInputChange}
+          placeholder="Enter your full name"
+          className="border-purple-600 focus-visible:ring-purple-400"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="ownerTitle">Your Title</Label>
+        <Input
+          id="ownerTitle"
+          name="ownerTitle"
+          value={formData.ownerTitle}
+          onChange={handleInputChange}
+          placeholder="e.g. Owner, Director, Lead Trainer"
+          className="border-purple-600 focus-visible:ring-purple-400"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="phoneNumber">Business Phone</Label>
+        <Input
+          id="phoneNumber"
+          name="phoneNumber"
+          value={formData.phoneNumber}
+          onChange={handleInputChange}
+          placeholder="Enter your business phone"
+          className="border-purple-600 focus-visible:ring-purple-400"
+        />
+      </div>
+    </div>
+  );
+
+  const PreviewStep = () => (
+    <div className="space-y-6">
+      <div className="bg-white rounded-lg shadow-lg p-6 space-y-4">
+        <h3 className="text-xl font-bold">
+          {formData.businessName || "Your Business Name"}
+        </h3>
+        <p className="text-gray-600">
+          {formData.description || "Your business description will appear here"}
+        </p>
+        <div className="border-t pt-4">
+          <p className="font-medium">Owner: {formData.ownerName}</p>
+          <p className="text-gray-600">{formData.ownerTitle}</p>
+        </div>
+        <div className="bg-purple-50 p-4 rounded-lg">
+          <p className="text-sm text-purple-600">
+            Your booking page will be available at:
+            <br />
+            <span className="font-mono">
+              booksmartly.com/
+              {formData.businessName?.toLowerCase().replace(/\s+/g, "-")}
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderStep = () => {
+    switch (step) {
+      case 0:
+        return <WelcomeStep />;
+      case 1:
+        return <BusinessDetailsStep />;
+      case 2:
+        return <OwnerDetailsStep />;
+      case 4:
+        return <PreviewStep />;
+      default:
+        return null;
     }
   };
-
-  const steps = [
-    // Previous steps remain the same...
-    {
-      title: "Business Profile",
-      icon: <Building2 className="w-6 h-6" />,
-      fields: (
-        <div className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Business Name
-            </label>
-            <input
-              type="text"
-              value={formData.businessName}
-              onChange={(e) => updateFormData("businessName", e.target.value)}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
-              placeholder="Your Business Name"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Business Type
-            </label>
-            <select
-              value={formData.businessType}
-              onChange={(e) => updateFormData("businessType", e.target.value)}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
-            >
-              <option value="">Select Type</option>
-              <option value="salon">Salon</option>
-              <option value="consulting">Consulting</option>
-              <option value="healthcare">Healthcare</option>
-              <option value="fitness">Fitness</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Website (Optional)
-            </label>
-            <input
-              type="url"
-              value={formData.website}
-              onChange={(e) => updateFormData("website", e.target.value)}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
-              placeholder="https://yourbusiness.com"
-            />
-          </div>
-        </div>
-      ),
-    },
-    // ... Previous steps continue
-
-    {
-      title: "Final Setup",
-      icon: <CheckCircle className="w-6 h-6" />,
-      fields: (
-        <div className="space-y-6">
-          <div className="bg-purple-50 p-6 rounded-lg">
-            <h4 className="font-medium text-lg mb-4">Setup Summary</h4>
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Business Name</span>
-                <span className="font-medium">{formData.businessName}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Services</span>
-                <span className="font-medium">{formData.services.length}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Working Hours</span>
-                <span className="font-medium">
-                  {formData.workingHours.start} - {formData.workingHours.end}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Online Payments</span>
-                <span className="font-medium">
-                  {formData.acceptPayments ? "Enabled" : "Disabled"}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={formData.termsAccepted}
-                onChange={(e) =>
-                  updateFormData("termsAccepted", e.target.checked)
-                }
-                className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-              />
-              <span className="ml-2">I accept the terms and conditions</span>
-            </label>
-
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={formData.marketingEmails}
-                onChange={(e) =>
-                  updateFormData("marketingEmails", e.target.checked)
-                }
-                className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-              />
-              <span className="ml-2">
-                Send me product updates and marketing emails (optional)
-              </span>
-            </label>
-          </div>
-        </div>
-      ),
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl shadow-xl p-8"
-        >
-          {/* Progress Steps */}
-          <div className="mb-8">
-            <div className="flex justify-between mb-2">
-              {steps.map((s, index) => (
-                <motion.div
-                  key={index}
-                  className="flex flex-col items-center"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: index * 0.2 }}
-                >
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      step > index + 1
-                        ? "bg-purple-500"
-                        : step === index + 1
-                        ? "bg-purple-500"
-                        : "bg-gray-200"
-                    } text-white mb-2`}
-                  >
-                    {step > index + 1 ? (
-                      <CheckCircle className="w-6 h-6" />
-                    ) : (
-                      s.icon
-                    )}
-                  </div>
-                  <span className="text-xs text-gray-500">{s.title}</span>
-                </motion.div>
-              ))}
-            </div>
-            <div className="h-2 bg-gray-200 rounded-full">
-              <motion.div
-                className="h-full bg-purple-500 rounded-full"
-                initial={{ width: "0%" }}
-                animate={{
-                  width: `${((step - 1) / (steps.length - 1)) * 100}%`,
-                }}
-                transition={{ duration: 0.5 }}
-              />
-            </div>
+        {/* Progress bar */}
+        <div className="mb-8">
+          <Progress value={(step / (steps.length - 1)) * 100} className="h-2" />
+          <div className="mt-4">
+            <h2 className="text-xl font-semibold">{steps[step].title}</h2>
+            <p className="text-gray-600">{steps[step].description}</p>
           </div>
+        </div>
 
-          {/* Form Content */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={step}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-6"
-            >
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                {steps[step - 1].title}
-              </h2>
-              {steps[step - 1].fields}
-            </motion.div>
-          </AnimatePresence>
+        {/* Form content */}
+        <div className="bg-white rounded-xl shadow-sm p-8">{renderStep()}</div>
 
-          {/* Navigation */}
+        {/* Navigation buttons */}
+        {step > 0 && (
           <div className="mt-8 flex justify-between">
-            <button
-              onClick={() => setStep(step - 1)}
-              disabled={step === 1}
-              className={`flex items-center px-4 py-2 rounded-lg ${
-                step === 1
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
+            <Button
+              onClick={handleBack}
+              variant="outline"
+              className="border-purple-600 text-purple-600 hover:bg-purple-50"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
-            </button>
-            <button
-              onClick={() => {
-                if (step === steps.length) {
-                  handleSubmit();
-                } else {
-                  setStep(step + 1);
-                }
-              }}
-              disabled={isSubmitting}
-              className="flex items-center px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 disabled:bg-purple-300"
+              <ArrowLeft className="mr-2 w-4 h-4" /> Back
+            </Button>
+            <Button
+              onClick={handleNext}
+              className="bg-purple-600 hover:bg-purple-700"
             >
-              {isSubmitting ? (
-                <>
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Processing...
-                </>
-              ) : (
-                <>
-                  {step === steps.length ? "Complete Setup" : "Next"}
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </>
-              )}
-            </button>
+              {step === steps.length - 1 ? "Complete" : "Continue"}{" "}
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
           </div>
-        </motion.div>
+        )}
       </div>
     </div>
   );
-};
-
-export default OnboardingPage;
+}
