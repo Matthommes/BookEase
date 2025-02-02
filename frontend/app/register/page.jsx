@@ -19,7 +19,7 @@ export default function Register() {
               height={96}
               className="h-auto w-16 sm:w-20 lg:w-24 mb-10"
               priority
-              quality={75}
+              quality={100}
             />
           </div>
         </Link>

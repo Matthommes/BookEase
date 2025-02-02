@@ -1,6 +1,5 @@
 "use client";
 
-import brandLogo from "../../public/brand-logo.png";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -103,10 +102,14 @@ export default function Verify() {
       <div className="max-w-2xl mx-auto px-4 py-8">
         <Link href="/" className="block text-center">
           <Image
-            src={brandLogo}
-            alt="BookSmartly Logo"
             className="w-32 mx-auto transition-transform hover:scale-105"
+            src="/icons/brand-logo.png"
+            alt="Clyne Logo"
+            width={96}
+            height={96}
+            
             priority
+            quality={100}
           />
         </Link>
 
