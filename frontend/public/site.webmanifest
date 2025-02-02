@@ -1,24 +1,46 @@
 {
   "background_color": "#ffffff",
-  "categories": ["business", "productivity", "utilities"],
+  "categories": [
+    "business",
+    "productivity",
+    "utilities"
+  ],
   "description": "Streamline your business with Clyne's customizable booking platform. Easily manage appointments, services, and client scheduling.",
   "dir": "ltr",
   "display": "standalone",
   "icons": [
     {
-      "purpose": "any maskable",
+      "purpose": "any",
       "sizes": "192x192",
       "src": "/icons/android-chrome-192x192.png",
       "type": "image/png"
     },
     {
-      "purpose": "any maskable",
+      "purpose": "maskable",
+      "sizes": "192x192",
+      "src": "/icons/android-chrome-192x192.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
       "sizes": "384x384",
       "src": "/android-chrome-384x384.png",
       "type": "image/png"
     },
     {
-      "purpose": "any maskable",
+      "purpose": "maskable",
+      "sizes": "384x384",
+      "src": "/android-chrome-384x384.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "/icons/android-chrome-512x512.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "maskable",
       "sizes": "512x512",
       "src": "/icons/android-chrome-512x512.png",
       "type": "image/png"
@@ -51,9 +73,9 @@
           "src": "/icons/booking.png"
         }
       ],
-      "name": "Create Booking",
-      "short_name": "Book",
-      "url": "/booking/new"
+      "name": "Login ",
+      "short_name": "Login",
+      "url": "/login"
     },
     {
       "description": "Manage your services",
@@ -64,8 +86,8 @@
         }
       ],
       "name": "Manage Services",
-      "short_name": "Services",
-      "url": "/services"
+      "short_name": "Register",
+      "url": "/register"
     }
   ],
   "start_url": "/",
