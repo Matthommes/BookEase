@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 export const IntegrationsLogos = () => {
@@ -23,15 +25,16 @@ export const IntegrationsLogos = () => {
           {integrations.map((integration, i) => (
             <div
               key={i}
-              className="p-4 hover:scale-110 transition-transform duration-300 cursor-pointer grayscale-0 hover:grayscale lg:grayscale lg:hover:grayscale-0"
+              className="p-4 hover:scale-110 transition-transform duration-300 cursor-pointer 
+                         grayscale-0 hover:grayscale lg:grayscale lg:hover:grayscale-0"
             >
               <Image
                 src={integration.icon}
                 alt={integration.name}
                 width={50}
                 height={50}
-                className="w-auto h-auto"
-                // unoptimized
+                className="w-[50px] h-[50px]"
+                loading="lazy"
               />
             </div>
           ))}

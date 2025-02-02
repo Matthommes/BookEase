@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import { Card } from "./ui/card";
+import { Card } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export const Testimonials = () => {
   const testimonials = [

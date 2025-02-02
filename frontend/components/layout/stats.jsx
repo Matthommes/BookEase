@@ -1,3 +1,4 @@
+"use client"
 export const Stats = () => {
   const stats = [
     { number: "99.9%", label: "Uptime" },

@@ -1,1 +1,74 @@
-{"name":"","short_name":"","icons":[{"src":"/android-chrome-192x192.png","sizes":"192x192","type":"image/png"},{"src":"/android-chrome-512x512.png","sizes":"512x512","type":"image/png"}],"theme_color":"#ffffff","background_color":"#ffffff","display":"standalone"}
+
+{
+  "name":"Clyne",
+  "background_color": "#ffffff",
+  "categories": ["business", "productivity", "utilities"],
+  "description": "Streamline your business with Clyne's customizable booking platform. Easily manage appointments, services, and client scheduling.",
+  "dir": "ltr",
+  "display": "standalone",
+  "icons": [
+    {
+      "purpose": "any maskable",
+      "sizes": "192x192",
+      "src": "/android-chrome-192x192.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any maskable",
+      "sizes": "384x384",
+      "src": "/android-chrome-384x384.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any maskable",
+      "sizes": "512x512",
+      "src": "/android-chrome-512x512.png",
+      "type": "image/png"
+    }
+  ],
+  "lang": "en",
+  "orientation": "any",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "screenshots": [
+    {
+      "sizes": "1280x720",
+      "src": "/screenshots/booking-screen.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "1280x720",
+      "src": "/screenshots/customization-screen.png",
+      "type": "image/png"
+    }
+  ],
+  "short_name": "Clyne",
+  "shortcuts": [
+    {
+      "description": "Create a new booking",
+      "icons": [
+        {
+          "sizes": "192x192",
+          "src": "/icons/booking.png"
+        }
+      ],
+      "name": "Create Booking",
+      "short_name": "Book",
+      "url": "/booking/new"
+    },
+    {
+      "description": "Manage your services",
+      "icons": [
+        {
+          "sizes": "192x192",
+          "src": "/icons/services.png"
+        }
+      ],
+      "name": "Manage Services",
+      "short_name": "Services",
+      "url": "/services"
+    }
+  ],
+  "start_url": "/",
+  "theme_color": "#007BFF"
+}
