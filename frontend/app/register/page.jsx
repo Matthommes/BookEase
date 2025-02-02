@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import SocialButton from "../login/component/socialButton";
-import brandLogo from "@/public/brand-logo.png";
+
 import RegisterForm from "./component/registerForm";
 
 export default function Register() {
@@ -13,10 +13,13 @@ export default function Register() {
         <Link href="/">
           <div className="flex justify-center items-center">
             <Image
-              src={brandLogo}
-              alt="BookSmartly Logo"
+              src="/icons/brand-logo.png"
+              alt="Clyne Logo"
+              width={96}
+              height={96}
               className="h-auto w-16 sm:w-20 lg:w-24 mb-10"
               priority
+              quality={75}
             />
           </div>
         </Link>

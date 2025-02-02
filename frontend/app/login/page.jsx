@@ -4,7 +4,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import SocialButton from "./component/socialButton";
-import brandLogo from "@/public/brand-logo.png";
 import LoginForm from "./component/loginForm";
 
 
@@ -15,8 +14,8 @@ export default function Login() {
         <Link href="/">
           <div className="flex justify-center items-center">
             <Image
-              src={brandLogo}
-              alt="BookSmartly Logo"
+              src="/icons/brand-logo.png"
+              alt="Clyne Logo"
               width={96}
               height={96} 
               className="h-auto w-16 sm:w-20 lg:w-24 mb-10"

@@ -1,6 +1,4 @@
-
 {
-  "name":"Clyne",
   "background_color": "#ffffff",
   "categories": ["business", "productivity", "utilities"],
   "description": "Streamline your business with Clyne's customizable booking platform. Easily manage appointments, services, and client scheduling.",
@@ -10,7 +8,7 @@
     {
       "purpose": "any maskable",
       "sizes": "192x192",
-      "src": "/android-chrome-192x192.png",
+      "src": "/icons/android-chrome-192x192.png",
       "type": "image/png"
     },
     {
@@ -22,12 +20,13 @@
     {
       "purpose": "any maskable",
       "sizes": "512x512",
-      "src": "/android-chrome-512x512.png",
+      "src": "/icons/android-chrome-512x512.png",
       "type": "image/png"
     }
   ],
   "lang": "en",
-  "orientation": "any",
+  "name": "Clyne",
+  "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "related_applications": [],
   "screenshots": [

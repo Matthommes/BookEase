@@ -5,8 +5,13 @@ export default function middleware(req) {
   const path = req.nextUrl.pathname;
 
   const home = "/";
-  const publicPath = ["/login", "/register", "/verify", "/verify/"];
-
+const publicPath = [
+  "/login",
+  "/register",
+  "/verify",
+  "/verify/",
+  "/service-worker.js",
+];
   const isPublicPath =
     publicPath.some((p) => path.startsWith(p)) || path.startsWith("/verify/");
 
@@ -16,9 +21,8 @@ export default function middleware(req) {
 
   return NextResponse.next();
 }
-
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.svg$|site\\.webmanifest$).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.svg$|site\\.webmanifest$|service-worker\\.js$).*)",
   ],
 };

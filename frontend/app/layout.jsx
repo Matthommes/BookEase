@@ -137,6 +137,7 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
+        <script src="/app.js?v=2.0.1"></script>
       </body>
     </html>
   );
