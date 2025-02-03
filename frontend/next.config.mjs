@@ -1,10 +1,8 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   async headers() {
     return [
       {
-        // matching all service worker files
         source: "/service-worker.js",
         headers: [
           {
@@ -12,14 +10,20 @@ const nextConfig = {
             value: "public, max-age=0, must-revalidate",
           },
           {
-            // Required for service worker
             key: "Service-Worker-Allowed",
             value: "/",
+          },
+        ],
+      },
+      {
+        source: "/manifest.json", 
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/manifest+json",
           },
         ],
       },
     ];
   },
 };
-
-export default nextConfig;

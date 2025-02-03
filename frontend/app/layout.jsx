@@ -5,7 +5,6 @@ import "./globals.css";
 import { frontendUrl } from "./register/utils/urls";
 import ServiceWorkerRegistration from "@/components/serviceWorkerReg";
 
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -85,13 +84,17 @@ export const metadata = {
       { url: "/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
     apple: [
-      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      {
+        url: "/icons/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
     ],
     other: [
       { rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#007BFF" },
     ],
   },
-  manifest: "/site.webmanifest",
+  manifest: "/manifest.json",
 };
 
 // Structured Data for SEO
@@ -123,8 +126,12 @@ export default function RootLayout({ children }) {
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
         <meta httpEquiv="Content-Language" content="en" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#007BFF" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <link rel="alternate" hrefLang="en" href={`${frontendUrl}`} />
-        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
