@@ -3,24 +3,36 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/service-worker.js",
+        source: "/(.*)",
         headers: [
           {
-            key: "Cache-Control",
-            value: "public, max-age=0, must-revalidate",
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: "Service-Worker-Allowed",
-            value: "/",
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
           },
         ],
       },
       {
-        source: "/manifest.json", 
+        source: "/service-worker.js",
         headers: [
           {
             key: "Content-Type",
-            value: "application/manifest+json",
+            value: "application/javascript; charset=utf-8",
+          },
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: "default-src 'self'; script-src 'self'",
           },
         ],
       },
