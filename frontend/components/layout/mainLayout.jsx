@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { CTASection } from "@/components/layout/cta";
 import { InteractiveDemo } from "@/components/layout/demo";

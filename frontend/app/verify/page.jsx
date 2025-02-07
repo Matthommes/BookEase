@@ -64,7 +64,7 @@ export default function Verify() {
     setIsLoading(false);
 
     return () => clearTimeout(timer);
-  }, [token]) // Watch for token changes
+  }, [token]); // Watch for token changes
 
   // Polling: Check if token gets updated
   useEffect(() => {
@@ -107,7 +107,6 @@ export default function Verify() {
             alt="Clyne Logo"
             width={96}
             height={96}
-            
             priority
             quality={100}
           />

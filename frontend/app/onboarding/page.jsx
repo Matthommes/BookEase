@@ -21,7 +21,7 @@ const BUSINESS_TYPES = [
   "Events & Entertainment",
   "Home Services",
   "Other",
-]; 
+];
 
 export default function OnboardingFlow() {
   const [step, setStep] = useState(0);

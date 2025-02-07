@@ -1,11 +1,12 @@
 export default function manifest() {
   return {
     name: "Clyne",
+    id: "/",
     short_name: "Clyne",
     description:
       "Streamline your business with Clyne's customizable booking platform. Easily manage appointments, services, and client scheduling.",
     background_color: "#ffffff",
-    theme_color: "#007BFF",
+    theme_color: "#010101",
     display: "standalone",
     icons: [
       {
